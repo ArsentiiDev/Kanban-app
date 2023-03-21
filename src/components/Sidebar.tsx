@@ -6,15 +6,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setActiveBoard } from '../store/boardSlice';
 import { toggleVisibility, toggleAddModalVisibility } from '@/store/SidebarSlice';
 import openSidebar from '../assets/icon-show-sidebar.svg'
-import AddBoardModal from '@/Modals/AddBoardModal';
+import { RootState } from '@/store/store';
 
 
 function Sidebar({ boards }: {
     boards: any
 }) {
-    const activeBoardId = useSelector((state: any) => state.board.activeBoardId);
-    const isSidebarOpen = useSelector((state: any) => state.sidebar.isVisible);
-    const addBoardModalOpen = useSelector((state: any) => state.sidebar.addBoardModalOpen);
+    const activeBoardId = useSelector((state: RootState) => state.board.activeBoardId);
+    const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isVisible);
+    const addBoardModalOpen = useSelector((state: RootState) => state.sidebar.addBoardModalOpen);
     const dispatch = useDispatch();
 
     const handleBoardChange = (id: Number) => {
@@ -33,7 +33,7 @@ function Sidebar({ boards }: {
         <>
             {isSidebarOpen && (
                 <div className="hidden md:bg-gray md:z-10 md:fixed md:flex md:flex-col  top-16 bottom-0 md:w-[18rem] left:0 text-white pt-8 pb-4">
-                    <h4 className="px-6 font-medium tracking-widest text-sm mb-3 text-secondary">ALL BOARDS ({boards.length})</h4>
+                    <h4 className="px-6 font-medium tracking-widest text-sm mb-3 text-secondary">ALL BOARDS ({boards ? boards.length : 0})</h4>
                     <div className="flex-grow">
                         {boards && boards.map((el, index) => (
                             <div
@@ -76,9 +76,9 @@ function Sidebar({ boards }: {
                     </button>
                 </div>
             )}
-            {addBoardModalOpen && (
+            {/* {addBoardModalOpen && (
                 <AddBoardModal triggerEvent={toggleAddModal} />
-            )}
+            )} */}
 
         </>
 

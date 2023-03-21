@@ -11,19 +11,7 @@ import threeDots from '../assets/icon-vertical-ellipsis.svg'
 import HeaderDropdown from '../Modals/HeaderDropdownModal';
 import TaskModal from '../Modals/AddTaskModal';
 import { useSelector, useDispatch } from 'react-redux';
-import AddBoardModal from '../Modals/AddBoardModal';
 import { toggleAddModalVisibility } from '@/store/SidebarSlice';
-
-
-const projects = [
-    {
-        id: 'Test Project'
-    },
-    {
-        id: 'Platform Launch',
-    }
-]
-
 
 function Navbar({ boards }: {
     boards: any
@@ -63,7 +51,7 @@ function Navbar({ boards }: {
                     >
                         {boards && (
                             <div className="ml-4 mr-2">
-                                <h2 className="text-xl font-bold">{boards[activeBoardId].id}</h2>
+                                <h2 className="text-xl font-bold">{boards.length && boards[activeBoardId].id}</h2>
                             </div>
                         )}
                         <div
@@ -108,9 +96,6 @@ function Navbar({ boards }: {
                     <TaskModal setTaskModalOpen={setTaskModalOpen} boards={boards} activeBoardId={activeBoardId} />
                 )
             }
-            {addBoardModalOpen && (
-                <AddBoardModal triggerEvent={toggleAddModal} />
-            )}
         </>
 
     )

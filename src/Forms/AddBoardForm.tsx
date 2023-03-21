@@ -4,16 +4,17 @@ import { Formik, Form, FieldArray, Field } from 'formik';
 import Button from '@/components/Button';
 import Image from 'next/image';
 import cross from '../assets/icon-cross.svg'
+import axios from 'axios'
 
 
 const initialValues = {
     title: '',
-    statuses: ['To Do', 'Doing']
+    columns: ['To Do', 'Doing']
 }
 
 const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
-    statuses: Yup.array().of(Yup.string()),
+    columns: Yup.array().of(Yup.string()),
 })
 
 const colors = {
@@ -23,9 +24,49 @@ const colors = {
     gray: 'gray'
 }
 
-function AddBoardForm() {
-    const handleSubmit = (values: any) => {
-        // Handle form submission logic here
+function AddBoardForm({ setBoards, boards }: {
+    setBoards: any,
+    boards: any
+}) {
+    const deleteKanbanBoard = async (boardId: String) => {
+        try {
+            const response = await axios.delete(`/api/kanban?id=${boardId}`);
+            if (response.status === 200) {
+                console.log('Kanban board deleted successfully:', response.data.data);
+                setBoards(prev => {
+                    return prev.map(board => board !== boardId)
+                })
+            } else {
+                console.error('Error deleting Kanban board:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Failed to delete Kanban board:', error);
+        }
+    };
+
+    const handleSubmit = async (values: any) => {
+        const newBoard = {
+            id: values.title,
+            columns: values.columns.map((el, index) => {
+                return {
+                    id: index + 1,
+                    title: el,
+                    tasks: []
+                }
+            }),
+        };
+        console.log('handleSubmit: ', newBoard)
+        try {
+            const response = await axios.post('/api/kanban', newBoard);
+            setBoards(prev => {
+                return [
+                    response.data.data
+                ]
+            });
+        } catch (error) {
+            deleteKanbanBoard(newBoard.id)
+            console.error('Failed to create Kanban board:', error);
+        }
         console.log(values);
     };
 
@@ -51,15 +92,15 @@ function AddBoardForm() {
                     </div>
                     <div>
                         <label className="block font-medium mb-2 text-xs tracking-wider">Columns</label>
-                        <FieldArray name="statuses">
+                        <FieldArray name="columns">
                             {({ push, remove }) => (
                                 <div className="space-y-4">
-                                    {values.statuses.map((_, index) => (
+                                    {values.columns.map((_, index) => (
                                         <div key={index} className="flex items-center gap-4">
                                             <Field
                                                 key={index}
                                                 type="text"
-                                                name={`statuses.${index}`}
+                                                name={`columns.${index}`}
                                                 className="w-full p-2 border-none rounded bg-gray outline outline-[.25px] outline-formBorder  focus:outline-darkBlue text-sm text-secondary cursor-pointer"
                                                 placeholder={`Column ${index + 1}`}
                                             />
@@ -74,7 +115,7 @@ function AddBoardForm() {
 
                                     ))}
                                     <Button
-                                        triggerEvent={push}
+                                        onClick={() => push('')}
                                         value={'Add New Column'}
                                         stylings={`bg-${colors.white} text-${colors.darkBlue} font-bold`}
                                     />
@@ -83,9 +124,10 @@ function AddBoardForm() {
                         </FieldArray>
                     </div>
                     <Button
-                        type='submit'
-                        value='Add Board'
-                        stylings={`bg-${colors.darkBlue} text-${colors.white} mt-8`}
+                        type="submit"
+                        triggerEvent={null}
+                        value="Add Board"
+                        stylings={`bg-${colors.darkBlue} text-${colors.white} font-bold`}
                     />
                 </Form>
             )}

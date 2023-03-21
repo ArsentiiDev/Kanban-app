@@ -1,83 +1,47 @@
 import Board from '@/components/Board';
+import EmptyBoard from '@/components/EmptyBoard';
 import Layout from '@/components/Layout';
+import axios from 'axios';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleAddModalVisibility } from '@/store/SidebarSlice';
+import AddBoardModal from './../Modals/AddBoardModal';
+import { kanbanBoards } from './../Types/KanbanTypes';
 
 
-export default function Home() {
-  const boards = [
-    {
-      id: 'Platform Launch',
-      statuses: [{
-        id: 1,
-        title: 'To Do',
-        tasks: [
-          { id: 1, title: 'Task 1', description: 'Description for Task 1' },
-          { id: 2, title: 'Task 2', description: 'Description for Task 2' },
-        ],
-      },
-      {
-        id: 2,
-        title: 'In Progress',
-        tasks: [
-          { id: 3, title: 'Task 3', description: 'Description for Task 3' },
-        ],
-      },
-      {
-        id: 3,
-        title: 'Done',
-        tasks: [
-          { id: 4, title: 'Task 4', description: 'Description for Task 4' },
-        ],
-      }]
-    },
-    {
-      id: 'Marketing Plan',
-      statuses: [{
-        id: 1,
-        title: 'To Do',
-        tasks: [
-          { id: 1, title: 'Create Marketing Plan', description: 'Description for Task 1' }
-        ],
-      },
-      {
-        id: 2,
-        title: 'In Progress',
-        tasks: [
-        ],
-      },
-      {
-        id: 3,
-        title: 'Done',
-        tasks: [
-          { id: 2, title: 'Marketing plan approved', description: 'Description for Task 4' },
-        ],
-      }]
-    },
-    {
-      id: 'Roadmap',
-      statuses: [{
-        id: 1,
-        title: 'To Do',
-        tasks: [
-          { id: 1, title: 'Create a Roadmap', description: 'Description for Task 1' }
-        ],
-      },
-      {
-        id: 2,
-        title: 'In Progress',
-        tasks: [
-        ],
-      },
-      {
-        id: 3,
-        title: 'Done',
-        tasks: [
-        ],
-      }]
-    }
-  ]
+
+export default function Home({ kanbanBoards }: {
+  kanbanBoards: kanbanBoards[]
+}) {
+
+  const [boards, setBoards] = useState(kanbanBoards.length ? kanbanBoards : null)
+  const addBoardModalOpen = useSelector((state: any) => state.sidebar.addBoardModalOpen);
+
+  const dispatch = useDispatch();
+
+
+  const toggleAddModal = () => {
+    dispatch(toggleAddModalVisibility(!addBoardModalOpen))
+  }
+
   return (
     <Layout boards={boards}>
       <Board boards={boards} />
+      {addBoardModalOpen && (
+        <AddBoardModal triggerEvent={toggleAddModal} setBoards={setBoards} boards={boards} />
+      )}
     </Layout >
   )
+}
+
+export async function getServerSideProps() {
+  const response = await axios.get('http://localhost:3000/api/kanban');
+  // console.log('RESPONSE:', response)
+  const data = await response.data.data
+
+  return {
+    props: {
+      kanbanBoards: data
+    }
+  }
 }

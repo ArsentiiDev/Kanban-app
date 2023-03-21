@@ -93,7 +93,7 @@ const CreateTaskForm = ({ columns }: {
 
                                         ))}
                                         <Button
-                                            triggerEvent={push}
+                                            onClick={() => push('')}
                                             value={'Add New Subtask'}
                                             stylings={`bg-white text-darkBlue`}
                                         />
@@ -115,6 +115,7 @@ const CreateTaskForm = ({ columns }: {
                             </Field>
                         </div>
                         <Button
+                            type="submit"
                             value={'Add task'}
                             stylings={`bg-darkBlue text-white`}
                         />

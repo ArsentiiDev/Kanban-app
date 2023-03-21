@@ -4,7 +4,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import board from '../assets/icon-board.svg'
 import { toggleAddModalVisibility } from '@/store/SidebarSlice';
-import { AddBoardModal } from '@/Modals/AddBoardModal';
+import AddBoardModal from '@/Modals/AddBoardModal';
 
 const boards = [
     {

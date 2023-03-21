@@ -2,8 +2,10 @@ import CreateTaskForm from '@/Forms/CreateTaskForm'
 import React from 'react'
 import AddBoardForm from './../Forms/AddBoardForm';
 
-function AddBoardModal({ triggerEvent }: {
-    triggerEvent: any
+function AddBoardModal({ triggerEvent, setBoards, boards }: {
+    triggerEvent: any,
+    setBoards: any,
+    boards: any
 }) {
 
     console.log('TEST')
@@ -19,7 +21,7 @@ function AddBoardModal({ triggerEvent }: {
                 }}
                 className="absolute inset-0 bg-darkBG bg-opacity-25">
                 <div className="relative w-full max-w-[22rem] md:max-w-[30rem] mx-auto py-4 top-[6rem] bg-gray rounded-lg text-white shadow-md shadow-shadow">
-                    <AddBoardForm />
+                    <AddBoardForm setBoards={setBoards} boards={boards} />
                 </div>
             </div>
         </div>

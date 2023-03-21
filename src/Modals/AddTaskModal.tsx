@@ -10,7 +10,7 @@ function TaskModal({ setTaskModalOpen, boards, activeBoardId }: {
     const [columns, setColumns] = useState([])
 
     useEffect(() => {
-        setColumns(boards[activeBoardId].statuses.map(status => {
+        setColumns(boards[activeBoardId].columns.map(status => {
             return status.title
         }))
 
