@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from './Navbar';
-import Footer from './Footer';
 import { AppProps } from 'next/app';
 import Sidebar from './Sidebar';
 
-function Layout({ children }: React.PropsWithChildren) {
+function Layout({ children, boards }: {
+    children: any,
+    boards: Object[]
+}) {
+
+
     return (
         <>
-            <Navbar />
-            <Sidebar />
+            <Navbar boards={boards} />
+            <Sidebar boards={boards} />
             <main>{children}</main>
         </>
     )

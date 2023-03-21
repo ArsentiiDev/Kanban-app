@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AddColumnForm from '../Forms/AddColumnForm';
 
-function AddColumnModal({ setAddColumnOpen }: {
-    setAddColumnOpen: any
+function AddColumnModal({ setAddColumnOpen, setColumns, columns, boardName }: {
+    setAddColumnOpen: any,
+    setColumns: any,
+    columns: any,
+    boardName: String
 }) {
+
+
     return (
         <div
             className="fixed inset-0 overflow-y-auto flex items-center justify-center z-40"
@@ -11,14 +16,13 @@ function AddColumnModal({ setAddColumnOpen }: {
             <div
                 onClick={(e) => {
                     if (e.target === e.currentTarget)
-                        setAddColumnOpen(false);
-
+                        setAddColumnOpen(false)
                 }}
                 className="absolute inset-0 bg-darkBG bg-opacity-25" />
             <div
 
                 className="relative w-full max-w-[22rem] md:max-w-[30rem] mx-auto p-8 bg-gray rounded-lg text-white shadow-md shadow-shadow">
-                <AddColumnForm />
+                <AddColumnForm setColumns={setColumns} columns={columns} boardName={boardName} />
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Button from '../components/Button';
+import { useSelector } from 'react-redux';
 
 const initialValues = {
     title: '',
@@ -24,17 +25,20 @@ const colors = {
     gray: 'gray'
 }
 
-const CreateTaskForm = () => {
+const CreateTaskForm = ({ columns }: {
+    columns: any
+}) => {
     const handleSubmit = (values: any) => {
         // Handle form submission logic here
         console.log(values);
     };
 
+
     return (
-        <div className="px-4">
+        <>
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched }) => (
-                    <Form className="space-y-5 overflow-y-auto h-fit max-h-[40rem] px-2">
+                    <Form className="space-y-5 overflow-y-auto h-fit max-h-[40rem] px-6 py-4">
                         <h1 className="text-xl font-semibold tracking-wider mb-4">Add New Task</h1>
                         <div>
                             <label htmlFor="title" className="block text-xs tracking-wider font-medium mb-2">
@@ -89,10 +93,9 @@ const CreateTaskForm = () => {
 
                                         ))}
                                         <Button
-                                            onClick={push}
+                                            triggerEvent={push}
                                             value={'Add New Subtask'}
-                                            bgColor={colors.darkBlue}
-                                            textColor={colors.darkBlue}
+                                            stylings={`bg-white text-darkBlue`}
                                         />
                                     </div>
                                 )}
@@ -104,7 +107,7 @@ const CreateTaskForm = () => {
                             </label>
                             <Field as="select" id="status" name="status"
                                 className="w-full p-2 border border-gray-300 rounded bg-gray cursor-pointer outline outline-[.25px] outline-formBorder  focus:outline-darkBlue text-sm">
-                                {['To Do', 'In progress', 'Done'].map((el, index) => (
+                                {columns.map((el, index) => (
                                     <option key={index} className="bg-gray text-white">
                                         {el}
                                     </option>
@@ -113,13 +116,12 @@ const CreateTaskForm = () => {
                         </div>
                         <Button
                             value={'Add task'}
-                            bgColor={colors.darkBlue}
-                            textColor={colors.white}
+                            stylings={`bg-darkBlue text-white`}
                         />
                     </Form >
                 )}
             </Formik >
-        </div >
+        </ >
 
     );
 };

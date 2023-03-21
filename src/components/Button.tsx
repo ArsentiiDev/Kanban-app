@@ -1,17 +1,15 @@
 import React from 'react'
 
-function Button({ onClick, value, bgColor, textColor, type }: {
-    onClick: Function,
+function Button({ triggerEvent, value, stylings, type }: {
+    triggerEvent?: any,
     value: string,
-    bgColor: string,
-    textColor: string,
+    stylings: string,
     type?: any
 }) {
     return (
         <button
             type={type || 'button'}
-            onClick={() => onClick('')}
-            className={`py-3 w-full rounded-full my-4 bg-${bgColor} text-${textColor} font-bold uppercase tracking-wider text-xs`}
+            className={`py-3 w-full rounded-full my-4 font-bold uppercase tracking-wider text-xs ${stylings}`}
         >
             {value}
         </button>

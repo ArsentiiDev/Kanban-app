@@ -1,56 +1,84 @@
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import board from '../assets/icon-board.svg'
 import hideSidebar from '../assets/icon-hide-sidebar.svg'
-import { useMediaQuery } from 'react-responsive';
+import { useSelector, useDispatch } from 'react-redux';
+import { setActiveBoard } from '../store/boardSlice';
+import { toggleVisibility, toggleAddModalVisibility } from '@/store/SidebarSlice';
+import openSidebar from '../assets/icon-show-sidebar.svg'
+import AddBoardModal from '@/Modals/AddBoardModal';
 
 
-const boards = [
-    {
-        id: 'Platform Launch'
-    },
-    {
-        id: 'Marketing Plan'
-    },
-    {
-        id: 'Roadmap'
+function Sidebar({ boards }: {
+    boards: any
+}) {
+    const activeBoardId = useSelector((state: any) => state.board.activeBoardId);
+    const isSidebarOpen = useSelector((state: any) => state.sidebar.isVisible);
+    const addBoardModalOpen = useSelector((state: any) => state.sidebar.addBoardModalOpen);
+    const dispatch = useDispatch();
+
+    const handleBoardChange = (id: Number) => {
+        dispatch(setActiveBoard(id));
+    };
+
+    const toggleSidebarVisibility = () => {
+        dispatch(toggleVisibility(!isSidebarOpen))
     }
-]
 
-function Sidebar() {
-    const [isSidebarOpen, setSidebarOpen] = useState(true)
-    const isBigScreen = useMediaQuery({ query: "(min-width: 768px)" })
-    const toggleSidebar = () => {
-        console.log('test')
-        setSidebarOpen(!isSidebarOpen)
+    const toggleAddModal = () => {
+        dispatch(toggleAddModalVisibility(!addBoardModalOpen))
     }
+
     return (
         <>
-            {/* {isSidebarOpen && ( */} {/*React redux required*/}
-            <div className="hidden md:bg-gray md:fixed md:flex md:flex-col z-30 top-16 bottom-0 md:w-[18rem] left:0 text-white pt-8 pb-4">
-                <h4 className="px-6 font-medium tracking-widest text-sm mb-3 text-secondary">ALL BOARDS ({boards.length})</h4>
-                <div className="flex-grow">
-                    {boards && boards.map((el, index) => (
-                        <div key={index} className="flex gap-4 mr-6 items-center cursor-pointer hover:bg-darkBlue pl-6 py-3 hover:rounded-r-full hover:text-white">
+            {isSidebarOpen && (
+                <div className="hidden md:bg-gray md:z-10 md:fixed md:flex md:flex-col  top-16 bottom-0 md:w-[18rem] left:0 text-white pt-8 pb-4">
+                    <h4 className="px-6 font-medium tracking-widest text-sm mb-3 text-secondary">ALL BOARDS ({boards.length})</h4>
+                    <div className="flex-grow">
+                        {boards && boards.map((el, index) => (
+                            <div
+                                onClick={() => handleBoardChange(index)}
+                                key={index}
+                                className={`flex gap-4 mr-6 my-2 items-center cursor-pointer 
+                            ${index === activeBoardId ?
+                                        ' bg-darkBlue rounded-r-full hover:bg-white hover:text-darkBlue font-bold tracking-wider'
+                                        : ''
+                                    } hover:bg-darkBlue pl-6 py-3 hover:rounded-r-full hover:text-white`}>
+                                <Image src={board} alt="board" />
+                                <h3>{el.id}</h3>
+                            </div>
+                        ))}
+                        <div
+                            onClick={toggleAddModal}
+                            className="flex items-center gap-4 pl-6 py-3 mr-6 text-lightBlue cursor-pointer hover:bg-darkBlue hover:rounded-r-full hover:text-white">
                             <Image src={board} alt="board" />
-                            <h3>{el.id}</h3>
+                            <h4>+Create New Board</h4>
                         </div>
-                    ))}
-                    <div className="flex items-center gap-4 pl-6 py-3 mr-6 text-lightBlue cursor-pointer hover:bg-darkBlue hover:rounded-r-2xl hover:text-white">
-                        <Image src={board} alt="board" />
-                        <h4>+Create New Board</h4>
+                    </div>
+                    <div className="mr-6">
+                        <button
+                            onClick={toggleSidebarVisibility}
+                            className="w-full px-4 text-secondary font-bold inline-flex gap-2 items-center hover:bg-darkBlue hover:rounded-r-full py-3 hover:text-white">
+                            <Image src={hideSidebar} alt="hide" />
+                            Hide Sidebar
+                        </button>
                     </div>
                 </div>
-                <div className="mr-6">
+            )}
+
+            {!isSidebarOpen && (
+                <div className="container hidden md:block md:z-10 sticky top-[calc(100%-5rem)]">
                     <button
-                        onClick={() => toggleSidebar()}
-                        className="w-full px-4 text-secondary font-bold inline-flex gap-2 items-center hover:bg-darkBlue hover:rounded-r-full py-3 hover:text-white">
-                        <Image src={hideSidebar} alt="hide" />
-                        Hide Sidebar
+                        onClick={toggleSidebarVisibility}
+                        className="bg-darkBlue w-fit pl-2 pr-4 rounded-r-full text-white text-sm font-bold flex gap-2 items-center py-3">
+                        <Image src={openSidebar} alt="hide" />
+                        Open Sidebar
                     </button>
                 </div>
-            </div>
-            {/* )} */}
+            )}
+            {addBoardModalOpen && (
+                <AddBoardModal triggerEvent={toggleAddModal} />
+            )}
 
         </>
 
