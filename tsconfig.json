@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/config.js", "src/models/Kanban.ts", "src/lib/connect.ts", "src/lib/connect.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/config.js", "src/models/KanbanSchema.ts", "src/lib/dbConnect.ts", "src/lib/dbConnect.ts"],
   "exclude": ["node_modules"]
 }

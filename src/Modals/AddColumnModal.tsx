@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import AddColumnForm from '../Forms/AddColumnForm';
 
 function AddColumnModal({ setAddColumnOpen, setColumns, columns, boardName }: {
-    setAddColumnOpen: any,
+    setAddColumnOpen: () => any,
     setColumns: any,
     columns: any,
-    boardName: String
+    boardName: string
 }) {
 
 
@@ -22,7 +22,7 @@ function AddColumnModal({ setAddColumnOpen, setColumns, columns, boardName }: {
             <div
 
                 className="relative w-full max-w-[22rem] md:max-w-[30rem] mx-auto p-8 bg-gray rounded-lg text-white shadow-md shadow-shadow">
-                <AddColumnForm setColumns={setColumns} columns={columns} boardName={boardName} />
+                <AddColumnForm setColumns={setColumns} boardName={boardName} columns={columns} />
             </div>
         </div>
     );

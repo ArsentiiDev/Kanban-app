@@ -5,8 +5,8 @@ import Sidebar from './Sidebar';
 import { kanbanBoards } from './../Types/KanbanTypes';
 
 function Layout({ children, boards }: {
-    children: any,
-    boards: kanbanBoards[] | null
+    children: JSX.Element[],
+    boards: kanbanBoards[] | []
 }) {
 
 

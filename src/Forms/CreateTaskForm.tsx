@@ -3,6 +3,7 @@ import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Button from '../components/Button';
 import { useSelector } from 'react-redux';
+import { tasks } from '@/Types/KanbanTypes';
 
 const initialValues = {
     title: '',
@@ -26,7 +27,7 @@ const colors = {
 }
 
 const CreateTaskForm = ({ columns }: {
-    columns: any
+    columns: String[]
 }) => {
     const handleSubmit = (values: any) => {
         // Handle form submission logic here

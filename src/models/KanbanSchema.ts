@@ -26,6 +26,6 @@ const kanbanSchema = new Schema({
   columns: [columnSchema],
 });
 
-const Kanban = mongoose.models.Kanban || mongoose.model('Kanban', kanbanSchema);
+const KanbanModel = mongoose.models.Kanban || mongoose.model('Kanban', kanbanSchema);
 
-export default Kanban;
+export default KanbanModel;

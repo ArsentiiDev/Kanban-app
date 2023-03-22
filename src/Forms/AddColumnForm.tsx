@@ -5,22 +5,12 @@ import Button from '@/components/Button';
 import cross from '../assets/icon-cross.svg'
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
+import { columns } from './../Types/KanbanTypes';
 
-
-
-
-
-const colors = {
-    white: 'white',
-    lightBlue: 'lightBlue',
-    darkBlue: 'darkBlue',
-    gray: 'gray'
-}
-
-const AddColumnForm = ({ setColumns, columns, boardName }: {
-    setColumns: any,
-    columns: any,
-    boardName: any
+const AddColumnForm = ({ setColumns, boardName, columns }: {
+    setColumns: (arg0: any) => any,
+    boardName: string,
+    columns: columns[]
 }) => {
 
     const initialValues = {
@@ -31,10 +21,10 @@ const AddColumnForm = ({ setColumns, columns, boardName }: {
         columns: Yup.array().of(Yup.string()),
     });
 
-    const handleSubmit = (values) => {
+    const handleSubmit = (values: any) => {
         console.log(values)
 
-        let normalised = values.columns.map((column, index) => { //move to utils
+        let normalised = values.columns.map((column: string, index: number) => { //move to utils
             return {
                 id: columns.length + index + 1,
                 title: column,
@@ -44,7 +34,6 @@ const AddColumnForm = ({ setColumns, columns, boardName }: {
 
         // Handle form submission logic here
         setColumns((prev: any) => {
-
             return [...prev, ...normalised]
         })
         console.log(values);

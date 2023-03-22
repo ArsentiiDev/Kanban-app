@@ -3,17 +3,21 @@ import Column from './Column'
 import Task from './Task'
 import AddColumnModal from './../Modals/AddColumnModal';
 import { useSelector } from 'react-redux';
+import { kanbanBoards, columns } from './../Types/KanbanTypes';
+import { RootState } from '@/store/store';
+import { isEmptyArray } from 'formik';
 
 function Board({ boards }: {
-    boards: any
+    boards: kanbanBoards[] | []
 }) {
     const [addColumnOpen, setAddColumnOpen] = useState(false)
-    const [columns, setColumns] = useState(null);
-    const activeBoardId = useSelector((state: any) => state.board.activeBoardId);
+    const [columns, setColumns] = useState<columns[] | []>([]);
+    const activeBoardId: String = useSelector((state: RootState) => state.board.activeBoardId);
 
     useEffect(() => {
         if (boards) {
-            setColumns(boards[activeBoardId].columns)
+            let board = boards.find(board => board.id === activeBoardId)
+            setColumns(board ? board.columns : [])
         }
 
     }, [boards, activeBoardId])
@@ -22,20 +26,20 @@ function Board({ boards }: {
         setAddColumnOpen(!addColumnOpen)
     }
 
-    const isSidebarOpen = useSelector((state: any) => state.sidebar.isVisible);
+    const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isVisible);
 
     return (
         <>
             <div className={`flex ${isSidebarOpen ? 'md:relative md:left-[18rem] md:top-[1rem] pt-12' : 'md:left-0 pt-8'}  overflow-x-scroll min-h-screen bg-mainBG text-white`}>
-                {columns && columns.map((column) => (
-                    <Column key={column.id}>
+                {!isEmptyArray(columns) && columns.map((column, index) => (
+                    <Column key={index}>
                         <h2 className="font-bold text-sm mb-4 tracking-widest text-secondary">{column.title} ({column.tasks.length})</h2>
                         {column.tasks.map((task) => (
                             <Task key={task.id} task={task} />
                         ))}
                     </Column>
                 ))}
-                {boards && (
+                {!isEmptyArray(boards) && (
                     <Column
                         stylings={`bg-newColumn hover:shadow-xl hover:text-lightBlue hover:shadow-lightBlue/10 cursor-pointer`}>
                         <div
@@ -48,11 +52,9 @@ function Board({ boards }: {
                 )
                 }
             </div>
-            {
-                addColumnOpen && (
-                    <AddColumnModal setAddColumnOpen={setAddColumnOpen} setColumns={setColumns} columns={columns} boardName={boards[activeBoardId]} />
-                )
-            }
+            {addColumnOpen && (
+                <AddColumnModal setAddColumnOpen={setAddColumnOpen} setColumns={setColumns} columns={columns} boardName={boards[activeBoardId]} />
+            )}
         </>
     )
 }

@@ -7,17 +7,18 @@ import { setActiveBoard } from '../store/boardSlice';
 import { toggleVisibility, toggleAddModalVisibility } from '@/store/SidebarSlice';
 import openSidebar from '../assets/icon-show-sidebar.svg'
 import { RootState } from '@/store/store';
+import { kanbanBoards } from '@/Types/KanbanTypes';
 
 
 function Sidebar({ boards }: {
-    boards: any
+    boards: kanbanBoards[]
 }) {
-    const activeBoardId = useSelector((state: RootState) => state.board.activeBoardId);
-    const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isVisible);
-    const addBoardModalOpen = useSelector((state: RootState) => state.sidebar.addBoardModalOpen);
+    const activeBoardId: string = useSelector((state: RootState) => state.board.activeBoardId);
+    const isSidebarOpen: Boolean = useSelector((state: RootState) => state.sidebar.isVisible);
+    const addBoardModalOpen: Boolean = useSelector((state: RootState) => state.sidebar.addBoardModalOpen);
     const dispatch = useDispatch();
 
-    const handleBoardChange = (id: Number) => {
+    const handleBoardChange = (id: string) => {
         dispatch(setActiveBoard(id));
     };
 
@@ -35,12 +36,12 @@ function Sidebar({ boards }: {
                 <div className="hidden md:bg-gray md:z-10 md:fixed md:flex md:flex-col  top-16 bottom-0 md:w-[18rem] left:0 text-white pt-8 pb-4">
                     <h4 className="px-6 font-medium tracking-widest text-sm mb-3 text-secondary">ALL BOARDS ({boards ? boards.length : 0})</h4>
                     <div className="flex-grow">
-                        {boards && boards.map((el, index) => (
+                        {boards && boards.map((el: kanbanBoards, index: number) => (
                             <div
-                                onClick={() => handleBoardChange(index)}
+                                onClick={() => handleBoardChange(el.id)}
                                 key={index}
                                 className={`flex gap-4 mr-6 my-2 items-center cursor-pointer 
-                            ${index === activeBoardId ?
+                            ${el.id === activeBoardId ?
                                         ' bg-darkBlue rounded-r-full hover:bg-white hover:text-darkBlue font-bold tracking-wider'
                                         : ''
                                     } hover:bg-darkBlue pl-6 py-3 hover:rounded-r-full hover:text-white`}>
@@ -76,10 +77,6 @@ function Sidebar({ boards }: {
                     </button>
                 </div>
             )}
-            {/* {addBoardModalOpen && (
-                <AddBoardModal triggerEvent={toggleAddModal} />
-            )} */}
-
         </>
 
     )

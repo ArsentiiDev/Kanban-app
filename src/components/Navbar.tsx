@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { useMediaQuery } from 'react-responsive'
 import logo from '../assets/logo-mobile.svg';
 import upDropdown from '../assets/icon-chevron-up.svg';
 import downDropdown from '../assets/icon-chevron-down.svg'
@@ -12,33 +11,36 @@ import HeaderDropdown from '../Modals/HeaderDropdownModal';
 import TaskModal from '../Modals/AddTaskModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleAddModalVisibility } from '@/store/SidebarSlice';
+import { kanbanBoards } from './../Types/KanbanTypes';
+import { RootState } from '@/store/store';
+import { Dispatch } from '@reduxjs/toolkit';
+import { isEmptyArray } from 'formik';
 
 function Navbar({ boards }: {
-    boards: any
+    boards: kanbanBoards[] | []
 }) {
-    const isBigScreen = useMediaQuery({ query: "(min-width: 768px)" })
     const [openDropdown, setDropdown] = useState(false)
     const [isElipsisMenuOpen, setElipsisMenu] = useState(false);
     const [isTaskModalOpen, setTaskModalOpen] = useState(false);
 
-    const activeBoardId = useSelector((state: any) => state.board.activeBoardId);
-    const addBoardModalOpen = useSelector((state: any) => state.sidebar.addBoardModalOpen);
-    const dispatch = useDispatch();
+    const activeBoardId: String = useSelector((state: RootState) => state.board.activeBoardId);
+    const addBoardModalOpen: Boolean = useSelector((state: RootState) => state.sidebar.addBoardModalOpen);
+    const dispatch: Dispatch = useDispatch();
 
 
-    const toggleThreeDotsMenu = () => {
+    const toggleThreeDotsMenu: VoidFunction = () => {
         setDropdown(!openDropdown);
         setElipsisMenu(!isElipsisMenuOpen)
     }
 
-    const toggleAddModal = () => {
+    const toggleAddModal: VoidFunction = () => {
         dispatch(toggleAddModalVisibility(!addBoardModalOpen))
     }
 
     return (
         <>
             <div className="fixed z-10 right-0 left-0 text-white">
-                <header className="flex p-4 items-center relative  bg-gray">
+                <header className="flex p-4 items-center relative bg-gray">
                     <div className="flex md:w-[18rem] gap-4 items-center pl-2">
                         <Image src={logo} alt="logo" />
                         <h3 className="hidden md:block text-4xl font-semibold">
@@ -49,14 +51,14 @@ function Navbar({ boards }: {
                         className={`flex mr-auto justify-start items-center cursor-pointer md:cursor-auto`}
 
                     >
-                        {boards && (
+                        {!isEmptyArray(boards) && (
                             <div className="ml-4 mr-2">
-                                <h2 className="text-xl font-bold">{boards.length && boards[activeBoardId].id}</h2>
+                                <h2 className="text-xl font-bold">{activeBoardId}</h2>
                             </div>
                         )}
                         <div
                             onClick={toggleThreeDotsMenu}
-                            className="p-4 hover:bg-secondary/25 rounded-xl inline-flex items-center justify-center">
+                            className="p-4 hover:bg-secondary/25 rounded-xl inline-flex items-center justify-cente md:hidden">
                             <Image
                                 src={openDropdown ? downDropdown : upDropdown}
                                 alt="dropdown"
@@ -83,19 +85,22 @@ function Navbar({ boards }: {
                 </header >
 
             </div >
-            {openDropdown && !isBigScreen && (
-                <HeaderDropdown
-                    setOpenDropdown={setDropdown}
-                    toggleAddModal={toggleAddModal}
-                    boardsAmount={boards.length}
-                />
-            )
-            }
-            {
-                isTaskModalOpen && (
-                    <TaskModal setTaskModalOpen={setTaskModalOpen} boards={boards} activeBoardId={activeBoardId} />
-                )
-            }
+            {!isEmptyArray(boards) && (
+                <>
+                    {openDropdown && (
+                        <HeaderDropdown
+                            setOpenDropdown={setDropdown}
+                            toggleAddModal={toggleAddModal}
+                            boardsAmount={boards.length}
+                            boards={boards}
+                        />
+                    )}
+                    {isTaskModalOpen && (
+                        <TaskModal setTaskModalOpen={setTaskModalOpen} boards={boards} activeBoardId={activeBoardId} />
+                    )
+                    }
+                </>
+            )}
         </>
 
     )

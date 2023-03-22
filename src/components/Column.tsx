@@ -1,24 +1,24 @@
 import React from 'react'
+import { columns } from './../Types/KanbanTypes';
 
-interface columnProps {
-    column: {
-        id: number
-        title: string
-        tasks:
-        {
-            id: number
-            title: string
-            description: string
-        }[]
-    }
+// interface columnProps {
+//     column: {
+//         id: number
+//         title: string
+//         tasks:
+//         {
+//             id: number
+//             title: string
+//             description: string
+//         }[]
+//     }
 
-}
+// }
 
-function Column({ column, children, onClick, stylings }: {
-    column?: columnProps,
-    children: any,
-    onClick?: any,
-    stylings?: any
+function Column({ children, onClick, stylings }: {
+    children: React.ReactNode,
+    onClick?: () => any,
+    stylings?: string
 }) {
     return (
         <div
