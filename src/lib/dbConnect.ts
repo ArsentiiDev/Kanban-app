@@ -5,7 +5,7 @@ async function dbConnect() {
     return;
   }
 
-  await mongoose.connect(process.env.MONGODB_URI);
+  await mongoose.connect(process.env.MONGODB_URI as string);
 }
 
 export default dbConnect;

@@ -12,7 +12,7 @@ function Board({ boards }: {
 }) {
     const [addColumnOpen, setAddColumnOpen] = useState(false)
     const [columns, setColumns] = useState<columns[] | []>([]);
-    const activeBoardId: String = useSelector((state: RootState) => state.board.activeBoardId);
+    const activeBoardId: string = useSelector((state: RootState) => state.board.activeBoardId);
 
     useEffect(() => {
         if (boards) {
@@ -53,7 +53,7 @@ function Board({ boards }: {
                 }
             </div>
             {addColumnOpen && (
-                <AddColumnModal setAddColumnOpen={setAddColumnOpen} setColumns={setColumns} columns={columns} boardName={boards[activeBoardId]} />
+                <AddColumnModal setAddColumnOpen={setAddColumnOpen} setColumns={setColumns} columns={columns} boardName={activeBoardId} />
             )}
         </>
     )

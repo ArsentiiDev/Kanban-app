@@ -43,8 +43,8 @@ function Sidebar({ boards }: {
                                 className={`flex gap-4 mr-6 my-2 items-center cursor-pointer 
                             ${el.id === activeBoardId ?
                                         ' bg-darkBlue rounded-r-full hover:bg-white hover:text-darkBlue font-bold tracking-wider'
-                                        : ''
-                                    } hover:bg-darkBlue pl-6 py-3 hover:rounded-r-full hover:text-white`}>
+                                        : 'hover:rounded-r-full hover:bg-darkBlue hover:text-white'
+                                    }  pl-6 py-3`}>
                                 <Image src={board} alt="board" />
                                 <h3>{el.id}</h3>
                             </div>

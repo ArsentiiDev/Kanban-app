@@ -53,7 +53,7 @@ function Navbar({ boards }: {
                     >
                         {!isEmptyArray(boards) && (
                             <div className="ml-4 mr-2">
-                                <h2 className="text-xl font-bold">{activeBoardId}</h2>
+                                <h2 className="text-xl font-bold">Board: {activeBoardId}</h2>
                             </div>
                         )}
                         <div
@@ -62,7 +62,7 @@ function Navbar({ boards }: {
                             <Image
                                 src={openDropdown ? downDropdown : upDropdown}
                                 alt="dropdown"
-                                className="block md:hidden scale-150"
+                                className="scale-150"
                             />
                         </div>
 

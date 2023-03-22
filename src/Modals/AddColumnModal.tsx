@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import AddColumnForm from '../Forms/AddColumnForm';
 
 function AddColumnModal({ setAddColumnOpen, setColumns, columns, boardName }: {
-    setAddColumnOpen: () => any,
+    setAddColumnOpen: (arg0?: any) => any,
     setColumns: any,
     columns: any,
     boardName: string

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import CreateTaskForm from '../Forms/CreateTaskForm';
+import CreateTaskForm from '../Forms/AddTaskForm';
 import { kanbanBoards, columns } from './../Types/KanbanTypes';
 
 function TaskModal({ setTaskModalOpen, boards, activeBoardId }: {

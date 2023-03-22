@@ -1,4 +1,3 @@
-// pages/api/kanban.js
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../lib/dbConnect';
 import KanbanModel from '../../models/KanbanSchema';

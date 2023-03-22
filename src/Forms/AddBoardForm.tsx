@@ -30,7 +30,7 @@ function AddBoardForm({ setBoards, boards }: {
 }) {
     const deleteKanbanBoard = async (boardId: String) => {
         try {
-            const response = await axios.delete(`/api/kanban?id=${boardId}`);
+            const response = await axios.delete(`/api/board?id=${boardId}`);
             if (response.status === 200) {
                 console.log('Kanban board deleted successfully:', response.data.data);
                 setBoards(prev => {
@@ -57,7 +57,7 @@ function AddBoardForm({ setBoards, boards }: {
         };
         console.log('handleSubmit: ', newBoard)
         try {
-            const response = await axios.post('/api/kanban', newBoard);
+            const response = await axios.post('/api/board', newBoard);
             setBoards(prev => {
                 return [
                     response.data.data
