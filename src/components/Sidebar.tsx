@@ -13,13 +13,13 @@ import { kanbanBoards } from '@/Types/KanbanTypes';
 function Sidebar({ boards }: {
     boards: kanbanBoards[]
 }) {
-    const activeBoardId: string = useSelector((state: RootState) => state.board.activeBoardId);
+    const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);
     const isSidebarOpen: Boolean = useSelector((state: RootState) => state.sidebar.isVisible);
     const addBoardModalOpen: Boolean = useSelector((state: RootState) => state.sidebar.addBoardModalOpen);
     const dispatch = useDispatch();
 
-    const handleBoardChange = (id: string) => {
-        dispatch(setActiveBoard(id));
+    const handleBoardChange = (board: kanbanBoards) => {
+        dispatch(setActiveBoard(board));
     };
 
     const toggleSidebarVisibility = () => {
@@ -36,17 +36,17 @@ function Sidebar({ boards }: {
                 <div className="hidden md:bg-gray md:z-10 md:fixed md:flex md:flex-col  top-16 bottom-0 md:w-[18rem] left:0 text-white pt-8 pb-4">
                     <h4 className="px-6 font-medium tracking-widest text-sm mb-3 text-secondary">ALL BOARDS ({boards ? boards.length : 0})</h4>
                     <div className="flex-grow">
-                        {boards && boards.map((el: kanbanBoards, index: number) => (
+                        {boards && activeBoard && boards.map((el: kanbanBoards, index: number) => (
                             <div
-                                onClick={() => handleBoardChange(el.id)}
+                                onClick={() => handleBoardChange(el)}
                                 key={index}
                                 className={`flex gap-4 mr-6 my-2 items-center cursor-pointer 
-                            ${el.id === activeBoardId ?
+                            ${el._id === activeBoard._id ?
                                         ' bg-darkBlue rounded-r-full hover:bg-white hover:text-darkBlue font-bold tracking-wider'
                                         : 'hover:rounded-r-full hover:bg-darkBlue hover:text-white'
                                     }  pl-6 py-3`}>
                                 <Image src={board} alt="board" />
-                                <h3>{el.id}</h3>
+                                <h3>{el.title}</h3>
                             </div>
                         ))}
                         <div

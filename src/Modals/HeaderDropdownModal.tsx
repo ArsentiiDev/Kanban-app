@@ -13,11 +13,11 @@ function HeaderDropdown({ setOpenDropdown, boardsAmount, toggleAddModal, boards 
     boards: kanbanBoards[]
 }) {
 
-    const activeBoardId = useSelector((state: RootState) => state.board.activeBoardId);
+    const activeBoard = useSelector((state: RootState) => state.board.activeBoard);
     const dispatch = useDispatch();
 
-    const handleBoardChange = (id: string): any => {
-        dispatch(setActiveBoard(id));
+    const handleBoardChange = (board: kanbanBoards): any => {
+        dispatch(setActiveBoard(board));
     };
 
     return (
@@ -31,10 +31,10 @@ function HeaderDropdown({ setOpenDropdown, boardsAmount, toggleAddModal, boards 
                 <h4 className="px-6 font-medium tracking-widest text-sm mb-3">ALL BOARDS ({boardsAmount})</h4>
                 {boards && boards.map((el, index) => (
                     <div
-                        onClick={() => handleBoardChange(el.id)}
-                        key={index} className={`flex gap-4 mr-6 items-center cursor-pointer pl-6 py-3 my-2 ${activeBoardId === el.id ? 'bg-darkBlue rounded-r-full hover:bg-white text-white hover:text-lightBlue font-bold ' : 'hover:bg-darkBlue hover:rounded-r-full hover:text-white'}`}>
+                        onClick={() => handleBoardChange(el)}
+                        key={index} className={`flex gap-4 mr-6 items-center cursor-pointer pl-6 py-3 my-2 ${activeBoard === el._id ? 'bg-darkBlue rounded-r-full hover:bg-white text-white hover:text-lightBlue font-bold ' : 'hover:bg-darkBlue hover:rounded-r-full hover:text-white'}`}>
                         <Image src={board} alt="board" />
-                        <h3>{el.id}</h3>
+                        <h3>{el.title}</h3>
                     </div>
                 ))}
                 <div

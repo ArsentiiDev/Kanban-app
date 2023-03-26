@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react'
 import CreateTaskForm from '../Forms/AddTaskForm';
 import { kanbanBoards, columns } from './../Types/KanbanTypes';
 
-function TaskModal({ setTaskModalOpen, boards, activeBoardId }: {
+function TaskModal({ setTaskModalOpen, boards, activeBoard }: {
     setTaskModalOpen: any,
     boards: kanbanBoards[] | [],
-    activeBoardId: String
+    activeBoard: kanbanBoards | null
 }) {
 
     const [columns, setColumns] = useState<String[] | []>([])
 
     useEffect(() => {
-        let columns = boards.find(board => board.id === activeBoardId)?.columns.map((column: columns) => column.title)
-        setColumns(columns ? columns : [])
-
+        if (activeBoard) {
+            let columns = boards.find(board => board._id === activeBoard._id)?.columns.map((column: columns) => column.title);
+            setColumns(columns ? columns : [])
+        }
         return () => {
             setColumns([])
         }

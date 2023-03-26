@@ -1,17 +1,19 @@
 // store/boardSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from '@reduxjs/toolkit';
+import { ObjectId } from "mongodb";
+import { kanbanBoards } from '@/Types/KanbanTypes';
 
 const initialState = {
-  activeBoardId: '',
+  activeBoard: <kanbanBoards | null>null,
 };
 
 const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    setActiveBoard: (state, action:PayloadAction<string>) => {
-      state.activeBoardId = action.payload;
+    setActiveBoard: (state, action:PayloadAction<kanbanBoards | null>) => {
+      state.activeBoard = action.payload;
     },
   },
 });

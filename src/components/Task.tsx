@@ -3,11 +3,11 @@ import { tasks } from '@/Types/KanbanTypes';
 
 
 function Task({ task }: {
-    task: tasks
+    task: tasks,
 }) {
     return (
         <div
-            key={task.id}
+            key={task._id}
             className="bg-gray w-full p-4 mb-4 rounded-lg shadow-md shadow-shadow cursor-pointer"
         >
             <h3 className="font-bold text-lg mb-2">{task.title}</h3>

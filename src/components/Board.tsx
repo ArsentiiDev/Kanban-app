@@ -12,15 +12,14 @@ function Board({ boards }: {
 }) {
     const [addColumnOpen, setAddColumnOpen] = useState(false)
     const [columns, setColumns] = useState<columns[] | []>([]);
-    const activeBoardId: string = useSelector((state: RootState) => state.board.activeBoardId);
+    const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);
 
     useEffect(() => {
-        if (boards) {
-            let board = boards.find(board => board.id === activeBoardId)
+        if (boards && activeBoard) {
+            const board = boards.find(board => board._id === activeBoard._id)
             setColumns(board ? board.columns : [])
         }
-
-    }, [boards, activeBoardId])
+    }, [boards, activeBoard])
 
     const toggleAddColumnModal = () => {
         setAddColumnOpen(!addColumnOpen)
@@ -35,7 +34,9 @@ function Board({ boards }: {
                     <Column key={index}>
                         <h2 className="font-bold text-sm mb-4 tracking-widest text-secondary">{column.title} ({column.tasks.length})</h2>
                         {column.tasks.map((task) => (
-                            <Task key={task.id} task={task} />
+                            <div key={task._id}>
+                                <Task task={task} />
+                            </div>
                         ))}
                     </Column>
                 ))}

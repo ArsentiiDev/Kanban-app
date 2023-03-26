@@ -1,24 +1,26 @@
 export interface subtasks {
-    id: number,
+    _id: string,
     title: string,
     isDone: Boolean
 }
 
 export interface tasks {
-        id:number,
-        title: string,
-        description: string,
-        subtasks: subtasks[]
+    _id:string,
+    title: string,
+    description: string,
+    createdAt: Date,
+    subtasks: subtasks[]
 }
 
 export interface columns {
-        id: number,
-        title: string,
-        tasks: tasks[]
+    _id: string,
+    title: string,
+    tasks: tasks[]
 }
 
 export interface kanbanBoards {
-    id: string,
+    _id: string,
+    title: string,
     columns: columns[]
 }
 

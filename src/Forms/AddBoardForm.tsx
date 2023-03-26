@@ -46,10 +46,10 @@ function AddBoardForm({ setBoards, boards }: {
 
     const handleSubmit = async (values: any) => {
         const newBoard = {
-            id: values.title,
+            title: values.title,
+            createdAt: Date.now(),
             columns: values.columns.map((el, index) => {
                 return {
-                    id: index + 1,
                     title: el,
                     tasks: []
                 }
@@ -59,9 +59,7 @@ function AddBoardForm({ setBoards, boards }: {
         try {
             const response = await axios.post('/api/board', newBoard);
             setBoards(prev => {
-                return [
-                    response.data.data
-                ]
+                return [...prev, response.data.data]
             });
         } catch (error) {
             deleteKanbanBoard(newBoard.id)

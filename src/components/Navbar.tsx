@@ -23,7 +23,7 @@ function Navbar({ boards }: {
     const [isElipsisMenuOpen, setElipsisMenu] = useState(false);
     const [isTaskModalOpen, setTaskModalOpen] = useState(false);
 
-    const activeBoardId: String = useSelector((state: RootState) => state.board.activeBoardId);
+    const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);
     const addBoardModalOpen: Boolean = useSelector((state: RootState) => state.sidebar.addBoardModalOpen);
     const dispatch: Dispatch = useDispatch();
 
@@ -53,7 +53,7 @@ function Navbar({ boards }: {
                     >
                         {!isEmptyArray(boards) && (
                             <div className="ml-4 mr-2">
-                                <h2 className="text-xl font-bold">Board: {activeBoardId}</h2>
+                                <h2 className="text-xl font-bold">Board: {activeBoard ? activeBoard.title : ''}</h2>
                             </div>
                         )}
                         <div
@@ -96,7 +96,7 @@ function Navbar({ boards }: {
                         />
                     )}
                     {isTaskModalOpen && (
-                        <TaskModal setTaskModalOpen={setTaskModalOpen} boards={boards} activeBoardId={activeBoardId} />
+                        <TaskModal setTaskModalOpen={setTaskModalOpen} boards={boards} activeBoard={activeBoard} />
                     )
                     }
                 </>

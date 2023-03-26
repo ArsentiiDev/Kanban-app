@@ -27,7 +27,7 @@ export default function Home({ kanbanBoards }: {
   }
 
   useEffect(() => {
-    dispatch(setActiveBoard(boards ? boards[0].id : ''));
+    dispatch(setActiveBoard(boards ? boards[0] : null));
   })
 
   return (

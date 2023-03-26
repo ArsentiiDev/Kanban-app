@@ -2,27 +2,28 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
+// subtaskSchema
 const subtaskSchema = new Schema({
-  id: Number,
   title: String,
-  isDone: Boolean,
+  isDone: Boolean,// Reference to the parent task
 });
 
+// taskSchema
 const taskSchema = new Schema({
-  id: Number,
   title: String,
   description: String,
-  subtasks: [subtaskSchema],
+  createdAt: Date, // Reference to the parent column
+  subtasks: [subtaskSchema], // List of reference IDs to subtasks
 });
 
 const columnSchema = new Schema({
-  id: Number,
   title: String,
   tasks: [taskSchema],
 });
 
 const kanbanSchema = new Schema({
-  id: String,
+  title: String,
+  createdAt: Date,
   columns: [columnSchema],
 });
 
