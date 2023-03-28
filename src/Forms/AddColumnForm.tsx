@@ -73,9 +73,10 @@ const AddColumnForm = () => {
                         </div>
                         <Button
                             type="submit"
-                            value="Add Column"
-                            stylings={`bg-darkBlue text-white`}
-                        />
+                            primary={true}
+                        >
+                            <p>Add Column</p>
+                        </Button>
                     </Form>
                 )}
             </Formik>

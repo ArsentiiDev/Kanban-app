@@ -5,9 +5,8 @@ import Button from '@/components/Button';
 import Image from 'next/image';
 import cross from '../assets/icon-cross.svg'
 import axios from 'axios'
-import { kanbanBoards, columns } from '@/Types/KanbanTypes';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/store/store';
+import { columns } from '@/Types/KanbanTypes';
+import { useDispatch } from 'react-redux';
 import { addBoard } from '@/store/boardSlice';
 import { toggleAddBoardModal } from '@/store/SidebarSlice';
 
@@ -104,19 +103,20 @@ function AddBoardForm() {
                                     ))}
                                     <Button
                                         onClick={() => push('')}
-                                        value={'Add New Column'}
-                                        stylings={`bg-${colors.white} text-${colors.darkBlue} font-bold`}
-                                    />
+                                        primary={false}
+                                    >
+                                        <p>Add New Column</p>
+                                    </Button>
                                 </div>
                             )}
                         </FieldArray>
                     </div>
                     <Button
                         type="submit"
-                        triggerEvent={null}
-                        value="Add Board"
-                        stylings={`bg-${colors.darkBlue} text-${colors.white} font-bold`}
-                    />
+                        primary={true}
+                    >
+                        <p>Add Board</p>
+                    </Button>
                 </Form>
             )}
         </Formik>

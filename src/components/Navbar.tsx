@@ -15,6 +15,7 @@ import { RootState } from '@/store/store';
 import { Dispatch } from '@reduxjs/toolkit';
 import { isEmptyArray } from 'formik';
 import { toggleHeaderModal, toggleTaskModal } from '@/store/navbarSlice';
+import  Button  from '@/components/Button';
 
 function Navbar() {
     const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);
@@ -56,14 +57,16 @@ function Navbar() {
                     </div>
                     {activeBoard && (
                         <div className="flex items-center gap-4">
-                            <button
+                            <Button
                                 onClick={() => {
                                     dispatch(toggleTaskModal())
                                 }}
-                                className="px-5 py-3 bg-darkBlue hover:bg-lightBlue rounded-full">
+                                primary={true}
+                                spacing={`py-4 px-4`}
+                            >
                                 <p className="hidden md:block">+ Add New Task</p>
                                 <Image className="block md:hidden" src={addIconMobile} alt="add" />
-                            </button>
+                            </Button>
                             <Image
                                 className="cursor-pointer"
                                 src={threeDots}

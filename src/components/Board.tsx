@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Column from './Column'
 import Task from './Task'
 import AddColumnModal from './../Modals/AddColumnModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { kanbanBoards, columns } from './../Types/KanbanTypes';
 import { RootState } from '@/store/store';
-import { isEmptyArray } from 'formik';
 import { toggleAddColumnModal } from '@/store/columnSlice';
-import { setActiveBoard } from '@/store/boardSlice';
 
 function Board() {
     const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);

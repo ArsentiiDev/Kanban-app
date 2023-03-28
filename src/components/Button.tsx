@@ -1,18 +1,24 @@
 import React from 'react'
 
-function Button({ onClick, value, stylings, type }: {
+function Button({ children, type, onClick, value, spacing, primary = true }: {
     onClick?: any,
-    value: string,
-    stylings: string,
+    value?: string,
+    primary: boolean,
+    spacing?: string,
     type?: any
+    children: JSX.Element | JSX.Element[]
 }) {
+    const types = {
+        primary: 'bg-darkBlue text-white hover:bg-white hover:text-darkBlue',
+        secondary: 'bg-white text-darkBlue hover:bg-opacity-0 hover:outline hover:outline-darkBlue'
+    }
     return (
         <button
+            type={type || "button"}
             onClick={onClick}
-            type={type || 'button'}
-            className={`py-3 w-full rounded-full my-4 font-bold uppercase tracking-wider text-xs ${stylings}`}
+            className={`${spacing ? spacing : 'py-3 my-4'}  w-full rounded-full font-bold tracking-wider text-sm ${primary ? types.primary : types.secondary}`}
         >
-            {value}
+            {children}
         </button>
     )
 }

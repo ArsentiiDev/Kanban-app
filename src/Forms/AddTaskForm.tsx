@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Button from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { tasks, columns, kanbanBoards } from '@/Types/KanbanTypes';
+import {  columns, kanbanBoards } from '@/Types/KanbanTypes';
 import { RootState } from '@/store/store';
-import { setColumns } from '@/store/columnSlice';
 import axios from 'axios';
 import { toggleTaskModal } from '@/store/navbarSlice';
 import { addTask } from '@/store/boardSlice';
+import Image from 'next/image';
+import cross from '../assets/icon-cross.svg'
+
 
 const initialValues = {
     title: '',
@@ -32,7 +34,7 @@ const CreateTaskForm = () => {
     const dispatch = useDispatch()
 
     const handleSubmit = async (values: any) => {
-        const columnId = columns.find(column => column.title === values.status)!._id;
+        const columnId = activeBoard!.columns.find(column => column.title === values.status)!._id;
         const task = {
             kanbanId: activeBoard!._id,
             columnId: columnId,
@@ -117,16 +119,17 @@ const CreateTaskForm = () => {
                                                     onClick={() => remove(index)}
                                                     className="px-2 py-1 text-secondary text-2xl font-bold"
                                                 >
-                                                    х
+                                                    <Image src={cross}  alt="remove"/>
                                                 </button>
                                             </div>
 
                                         ))}
                                         <Button
                                             onClick={() => push('')}
-                                            value={'Add New Subtask'}
-                                            stylings={`bg-white text-darkBlue`}
-                                        />
+                                            primary={false}
+                                        >
+                                            <p>Add New Subtask</p>
+                                            </Button>
                                     </div>
                                 )}
                             </FieldArray>
@@ -146,9 +149,10 @@ const CreateTaskForm = () => {
                         </div>
                         <Button
                             type="submit"
-                            value={'Add task'}
-                            stylings={`bg-darkBlue text-white`}
-                        />
+                            primary={true}
+                        >
+                            <p>Add task</p>
+                        </Button>
                     </Form >
                 )}
             </Formik >
