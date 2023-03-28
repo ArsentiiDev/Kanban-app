@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { kanbanBoards, columns } from './../Types/KanbanTypes';
 import { RootState } from '@/store/store';
 import { isEmptyArray } from 'formik';
-import { setColumns, toggleAddColumnModal } from '@/store/columnSlice';
+import { toggleAddColumnModal } from '@/store/columnSlice';
 import { setActiveBoard } from '@/store/boardSlice';
 
 function Board() {
@@ -17,16 +17,10 @@ function Board() {
     const addColumnOpen = useSelector((state:RootState) => state.column.isColumnModalOpen)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        if (activeBoard) {
-            dispatch(setColumns(activeBoard ? activeBoard.columns : []));
-        }
-    }, [activeBoard,boards]);    
-
     return (
         <>
             <div className={`flex ${isSidebarOpen ? 'md:relative md:left-[18rem] md:top-[1rem] pt-12' : 'md:left-0 pt-8'}  overflow-x-scroll min-h-screen bg-mainBG text-white`}>
-                {activeBoard && activeBoard.columns && columns.map((column, index) => (
+                {activeBoard && activeBoard.columns && activeBoard.columns.map((column, index) => (
                     <Column key={index}>
                         <h2 className="font-bold text-sm mb-4 tracking-widest text-secondary">{column.title} ({column.tasks.length})</h2>
                         {column.tasks.map((task,i) => (

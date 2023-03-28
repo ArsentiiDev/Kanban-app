@@ -13,15 +13,12 @@ const columnSlice = createSlice({
   name: "board",
   initialState: initialState,
   reducers: {
-    setColumns: (state, action: PayloadAction<columns[] | []>) => {
-      state.columns = action.payload;
-    },
     toggleAddColumnModal: (state) =>{
         state.isColumnModalOpen = !state.isColumnModalOpen
     }
   },
 });
 
-export const { setColumns, toggleAddColumnModal } = columnSlice.actions;
+export const { toggleAddColumnModal } = columnSlice.actions;
 
 export default columnSlice.reducer;

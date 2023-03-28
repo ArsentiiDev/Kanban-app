@@ -137,7 +137,7 @@ const CreateTaskForm = () => {
                             </label>
                             <Field as="select" id="status" name="status"
                                 className="w-full p-2 border border-gray-300 rounded bg-gray cursor-pointer outline outline-[.25px] outline-formBorder  focus:outline-darkBlue text-sm">
-                                {columns.map((el, index) => (
+                                {activeBoard && activeBoard.columns.map((el, index) => (
                                     <option key={index} className="bg-gray text-white">
                                         {el.title}
                                     </option>
