@@ -4,16 +4,15 @@ import { AppProps } from 'next/app';
 import Sidebar from './Sidebar';
 import { kanbanBoards } from './../Types/KanbanTypes';
 
-function Layout({ children, boards }: {
-    children: JSX.Element[],
-    boards: kanbanBoards[] | []
+function Layout({ children }: {
+    children: JSX.Element,
 }) {
 
 
     return (
         <>
-            <Navbar boards={boards} />
-            <Sidebar boards={boards} />
+            <Navbar />
+            <Sidebar/>
             <main>{children}</main>
         </>
     )

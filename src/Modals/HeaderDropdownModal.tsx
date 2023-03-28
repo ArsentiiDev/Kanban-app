@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import board from '../assets/icon-board.svg'
 import { RootState } from '@/store/store';
 import { kanbanBoards } from '@/Types/KanbanTypes';
+import { toggleHeaderModal } from '@/store/navbarSlice';
+import { toggleAddBoardModal } from '@/store/SidebarSlice';
 
-function HeaderDropdown({ setOpenDropdown, boardsAmount, toggleAddModal, boards }: {
-    setOpenDropdown: (arg0: boolean) => any,
+function HeaderDropdown({ boardsAmount, boards }: {
     boardsAmount: number,
-    toggleAddModal: () => any,
     boards: kanbanBoards[]
 }) {
 
@@ -24,7 +24,7 @@ function HeaderDropdown({ setOpenDropdown, boardsAmount, toggleAddModal, boards 
         <div
             onClick={(e) => {
                 if (e.target === e.currentTarget)
-                    setOpenDropdown(false)
+                    dispatch(toggleHeaderModal())
             }}
             className="absolute md:hidden top-[4.5rem] left-0 right-0 bottom-[-100vh] py-6 px-12 bg-darkBG bg-opacity-25">
             <div className="relative w-[25rem] py-4 bg-gray rounded-lg text-secondary shadow-md shadow-shadow">
@@ -38,7 +38,7 @@ function HeaderDropdown({ setOpenDropdown, boardsAmount, toggleAddModal, boards 
                     </div>
                 ))}
                 <div
-                    onClick={toggleAddModal}
+                    onClick={() => dispatch(toggleAddBoardModal())}
                     className="flex items-center gap-4 pl-6 py-3 mr-6 text-lightBlue cursor-pointer hover:bg-darkBlue hover:rounded-r-full hover:text-white">
                     <Image src={board} alt="board" />
                     <h4>+Create New Board</h4>

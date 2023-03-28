@@ -4,18 +4,18 @@ import board from '../assets/icon-board.svg'
 import hideSidebar from '../assets/icon-hide-sidebar.svg'
 import { useSelector, useDispatch } from 'react-redux';
 import { setActiveBoard } from '../store/boardSlice';
-import { toggleVisibility, toggleAddModalVisibility } from '@/store/SidebarSlice';
+import { toggleSidebar, toggleAddBoardModal } from '@/store/SidebarSlice';
 import openSidebar from '../assets/icon-show-sidebar.svg'
 import { RootState } from '@/store/store';
 import { kanbanBoards } from '@/Types/KanbanTypes';
+import AddBoardModal from './../Modals/AddBoardModal';
 
 
-function Sidebar({ boards }: {
-    boards: kanbanBoards[]
-}) {
+function Sidebar() {
     const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);
-    const isSidebarOpen: Boolean = useSelector((state: RootState) => state.sidebar.isVisible);
+    const isSidebarOpen: Boolean = useSelector((state: RootState) => state.sidebar.isSidebarVisible);
     const addBoardModalOpen: Boolean = useSelector((state: RootState) => state.sidebar.addBoardModalOpen);
+    const boards: kanbanBoards[] = useSelector((state: RootState) => state.board.boards);
     const dispatch = useDispatch();
 
     const handleBoardChange = (board: kanbanBoards) => {
@@ -23,11 +23,11 @@ function Sidebar({ boards }: {
     };
 
     const toggleSidebarVisibility = () => {
-        dispatch(toggleVisibility(!isSidebarOpen))
+        dispatch(toggleSidebar())
     }
 
     const toggleAddModal = () => {
-        dispatch(toggleAddModalVisibility(!addBoardModalOpen))
+        dispatch(toggleAddBoardModal())
     }
 
     return (
@@ -76,6 +76,9 @@ function Sidebar({ boards }: {
                         Open Sidebar
                     </button>
                 </div>
+            )}
+            {addBoardModalOpen && (
+                <AddBoardModal  />
             )}
         </>
 

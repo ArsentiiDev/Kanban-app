@@ -5,6 +5,11 @@ import Button from '@/components/Button';
 import Image from 'next/image';
 import cross from '../assets/icon-cross.svg'
 import axios from 'axios'
+import { kanbanBoards, columns } from '@/Types/KanbanTypes';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/store/store';
+import { addBoard } from '@/store/boardSlice';
+import { toggleAddBoardModal } from '@/store/SidebarSlice';
 
 
 const initialValues = {
@@ -24,45 +29,30 @@ const colors = {
     gray: 'gray'
 }
 
-function AddBoardForm({ setBoards, boards }: {
-    setBoards: any,
-    boards: any
-}) {
-    const deleteKanbanBoard = async (boardId: String) => {
-        try {
-            const response = await axios.delete(`/api/board?id=${boardId}`);
-            if (response.status === 200) {
-                console.log('Kanban board deleted successfully:', response.data.data);
-                setBoards(prev => {
-                    return prev.map(board => board !== boardId)
-                })
-            } else {
-                console.error('Error deleting Kanban board:', response.data.message);
-            }
-        } catch (error) {
-            console.error('Failed to delete Kanban board:', error);
-        }
-    };
+function AddBoardForm() {
+
+    const dispatch = useDispatch();
 
     const handleSubmit = async (values: any) => {
         const newBoard = {
             title: values.title,
             createdAt: Date.now(),
-            columns: values.columns.map((el, index) => {
+            columns: values.columns.map((el: columns) => {
                 return {
                     title: el,
                     tasks: []
                 }
             }),
         };
-        console.log('handleSubmit: ', newBoard)
         try {
             const response = await axios.post('/api/board', newBoard);
-            setBoards(prev => {
-                return [...prev, response.data.data]
-            });
+            if (response.status === 200) {
+                dispatch(addBoard(response.data.data));
+                dispatch(toggleAddBoardModal())
+            } else {
+                console.log('Something went wrong')
+            }
         } catch (error) {
-            deleteKanbanBoard(newBoard.id)
             console.error('Failed to create Kanban board:', error);
         }
         console.log(values);

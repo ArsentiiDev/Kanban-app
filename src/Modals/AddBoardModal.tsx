@@ -1,13 +1,12 @@
 import React from 'react'
 import AddBoardForm from './../Forms/AddBoardForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleAddBoardModal } from '@/store/SidebarSlice';
+import { RootState } from '@/store/store';
 
-function AddBoardModal({ triggerEvent, setBoards, boards }: {
-    triggerEvent: any,
-    setBoards: any,
-    boards: any
-}) {
+function AddBoardModal() {
 
-    console.log('TEST')
+    const dispatch = useDispatch();
 
     return (
         <div
@@ -16,11 +15,11 @@ function AddBoardModal({ triggerEvent, setBoards, boards }: {
             <div
                 onClick={(e) => {
                     if (e.target === e.currentTarget)
-                        triggerEvent()
+                    dispatch(toggleAddBoardModal())
                 }}
                 className="absolute inset-0 bg-darkBG bg-opacity-25">
                 <div className="relative w-full max-w-[22rem] md:max-w-[30rem] mx-auto py-4 top-[6rem] bg-gray rounded-lg text-white shadow-md shadow-shadow">
-                    <AddBoardForm setBoards={setBoards} boards={boards} />
+                    <AddBoardForm />
                 </div>
             </div>
         </div>

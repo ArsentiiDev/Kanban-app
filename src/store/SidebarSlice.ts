@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SidebarSlice {
-  isVisible: Boolean,
+  isSidebarVisible: Boolean,
   addBoardModalOpen: Boolean,
 }
 
 const initialState:SidebarSlice = {
-  isVisible: true,
+  isSidebarVisible: true,
   addBoardModalOpen: false,
 };
 
@@ -14,16 +14,16 @@ const sidebarSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    toggleVisibility: (state, action: PayloadAction<boolean>) => {
-      state.isVisible = action.payload;
+    toggleSidebar: (state) => {
+      state.isSidebarVisible = !state.isSidebarVisible
     },
-    toggleAddModalVisibility: (state, action: PayloadAction<boolean>) => {
-      state.addBoardModalOpen = action.payload;
+    toggleAddBoardModal: (state) => {
+      state.addBoardModalOpen = !state.addBoardModalOpen
     },
   },
 });
 
-export const { toggleVisibility, toggleAddModalVisibility } =
+export const { toggleSidebar, toggleAddBoardModal } =
   sidebarSlice.actions;
 
 export default sidebarSlice.reducer;

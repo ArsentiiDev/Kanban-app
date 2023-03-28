@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Button from '../components/Button';
-import { useSelector } from 'react-redux';
-import { tasks } from '@/Types/KanbanTypes';
+import { useSelector, useDispatch } from 'react-redux';
+import { tasks, columns, kanbanBoards } from '@/Types/KanbanTypes';
+import { RootState } from '@/store/store';
+import { setColumns } from '@/store/columnSlice';
+import axios from 'axios';
+import { toggleTaskModal } from '@/store/navbarSlice';
+import { addTask } from '@/store/boardSlice';
 
 const initialValues = {
     title: '',
@@ -19,19 +24,43 @@ const validationSchema = Yup.object({
     subtasks: Yup.array().of(Yup.string()),
 })
 
-const colors = {
-    white: 'white',
-    lightBlue: 'lightBlue',
-    darkBlue: 'darkBlue',
-    gray: 'gray'
-}
 
-const CreateTaskForm = ({ columns }: {
-    columns: String[]
-}) => {
-    const handleSubmit = (values: any) => {
-        // Handle form submission logic here
-        console.log(values);
+const CreateTaskForm = () => {
+    const columns: columns[] | [] = useSelector((state: RootState) => state.column.columns);
+    const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);
+
+    const dispatch = useDispatch()
+
+    const handleSubmit = async (values: any) => {
+        const columnId = columns.find(column => column.title === values.status)!._id;
+        const task = {
+            kanbanId: activeBoard!._id,
+            columnId: columnId,
+            task: {
+                title: values.title,
+                description: values.description,
+                createdAt: Date.now(),
+                subtasks: values.subtasks.map((subtask: string) => {
+                    return {
+                        title: subtask,
+                        isDone: false,
+                    };
+                }) || [],
+            },
+        };
+
+        try {
+            const response = await axios.post(`/api/tasks`, task);
+            if (response.status === 200) {
+                let task = response.data.data.task;
+                dispatch(addTask({task: task, columnId: columnId}))
+                dispatch(toggleTaskModal())
+            } else {
+                console.log('There was an error when adding the new task');
+            }
+        } catch (err) {
+            console.error('Failed to create a new task:', err);
+        }
     };
 
 
@@ -110,7 +139,7 @@ const CreateTaskForm = ({ columns }: {
                                 className="w-full p-2 border border-gray-300 rounded bg-gray cursor-pointer outline outline-[.25px] outline-formBorder  focus:outline-darkBlue text-sm">
                                 {columns.map((el, index) => (
                                     <option key={index} className="bg-gray text-white">
-                                        {el}
+                                        {el.title}
                                     </option>
                                 ))}
                             </Field>

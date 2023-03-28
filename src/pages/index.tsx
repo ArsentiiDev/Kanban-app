@@ -2,13 +2,14 @@ import Board from '@/components/Board';
 import EmptyBoard from '@/components/EmptyBoard';
 import Layout from '@/components/Layout';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import {  useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleAddModalVisibility } from '@/store/SidebarSlice';
-import AddBoardModal from './../Modals/AddBoardModal';
+
 import { kanbanBoards } from './../Types/KanbanTypes';
-import { setActiveBoard } from '@/store/boardSlice';
 import { GetServerSideProps } from 'next';
+import { setBoards } from '@/store/boardSlice';
+import { Dispatch } from '@reduxjs/toolkit';
+import { RootState } from '@/store/store';
 
 
 
@@ -16,26 +17,15 @@ export default function Home({ kanbanBoards }: {
   kanbanBoards: kanbanBoards[] | []
 }) {
 
-  const [boards, setBoards] = useState(kanbanBoards.length ? kanbanBoards : [])
-  const addBoardModalOpen = useSelector((state: any) => state.sidebar.addBoardModalOpen);
-
-  const dispatch = useDispatch();
-
-
-  const toggleAddModal = () => {
-    dispatch(toggleAddModalVisibility(!addBoardModalOpen))
-  }
+  const dispatch:Dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setActiveBoard(boards ? boards[0] : null));
-  })
+    dispatch(setBoards(kanbanBoards))
+  }, [kanbanBoards])
 
   return (
-    <Layout boards={boards}>
-      <Board boards={boards} />
-      {addBoardModalOpen && (
-        <AddBoardModal triggerEvent={toggleAddModal} setBoards={setBoards} boards={boards} />
-      )}
+    <Layout>
+      <Board />
     </Layout >
   )
 }

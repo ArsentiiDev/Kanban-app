@@ -10,32 +10,18 @@ import threeDots from '../assets/icon-vertical-ellipsis.svg'
 import HeaderDropdown from '../Modals/HeaderDropdownModal';
 import TaskModal from '../Modals/AddTaskModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleAddModalVisibility } from '@/store/SidebarSlice';
 import { kanbanBoards } from './../Types/KanbanTypes';
 import { RootState } from '@/store/store';
 import { Dispatch } from '@reduxjs/toolkit';
 import { isEmptyArray } from 'formik';
+import { toggleHeaderModal, toggleTaskModal } from '@/store/navbarSlice';
 
-function Navbar({ boards }: {
-    boards: kanbanBoards[] | []
-}) {
-    const [openDropdown, setDropdown] = useState(false)
-    const [isElipsisMenuOpen, setElipsisMenu] = useState(false);
-    const [isTaskModalOpen, setTaskModalOpen] = useState(false);
-
+function Navbar() {
     const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);
-    const addBoardModalOpen: Boolean = useSelector((state: RootState) => state.sidebar.addBoardModalOpen);
+    const isTaskModalOpen: Boolean = useSelector((state: RootState) => state.navbar.isTaskModalOpen);
+    const isHeaderDropdownOpen: Boolean = useSelector((state: RootState) => state.navbar.isHeaderDropdownOpen);
+    const boards: kanbanBoards[] = useSelector((state: RootState) => state.board.boards);
     const dispatch: Dispatch = useDispatch();
-
-
-    const toggleThreeDotsMenu: VoidFunction = () => {
-        setDropdown(!openDropdown);
-        setElipsisMenu(!isElipsisMenuOpen)
-    }
-
-    const toggleAddModal: VoidFunction = () => {
-        dispatch(toggleAddModalVisibility(!addBoardModalOpen))
-    }
 
     return (
         <>
@@ -51,56 +37,52 @@ function Navbar({ boards }: {
                         className={`flex mr-auto justify-start items-center cursor-pointer md:cursor-auto`}
 
                     >
-                        {!isEmptyArray(boards) && (
-                            <div className="ml-4 mr-2">
-                                <h2 className="text-xl font-bold">Board: {activeBoard ? activeBoard.title : ''}</h2>
-                            </div>
+                        {activeBoard && (
+                            <>
+                                <div className="ml-4 mr-2">
+                                    <h2 className="text-xl font-bold">{activeBoard.title}</h2>
+                                </div>
+                                <div
+                                onClick={()=>dispatch(toggleHeaderModal())}
+                                className="p-4 hover:bg-secondary/25 rounded-xl inline-flex items-center justify-cente md:hidden">
+                                <Image
+                                    src={isHeaderDropdownOpen ? downDropdown : upDropdown}
+                                    alt="dropdown"
+                                    className="scale-150"
+                                />
+                                </div>
+                            </>
                         )}
-                        <div
-                            onClick={toggleThreeDotsMenu}
-                            className="p-4 hover:bg-secondary/25 rounded-xl inline-flex items-center justify-cente md:hidden">
+                    </div>
+                    {activeBoard && (
+                        <div className="flex items-center gap-4">
+                            <button
+                                onClick={() => {
+                                    dispatch(toggleTaskModal())
+                                }}
+                                className="px-5 py-3 bg-darkBlue hover:bg-lightBlue rounded-full">
+                                <p className="hidden md:block">+ Add New Task</p>
+                                <Image className="block md:hidden" src={addIconMobile} alt="add" />
+                            </button>
                             <Image
-                                src={openDropdown ? downDropdown : upDropdown}
-                                alt="dropdown"
-                                className="scale-150"
+                                className="cursor-pointer"
+                                src={threeDots}
+                                alt="dots"
                             />
                         </div>
-
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <button
-                            onClick={() => {
-                                setTaskModalOpen(true)
-                            }}
-                            className="px-5 py-3 bg-darkBlue hover:bg-lightBlue rounded-full">
-                            <p className="hidden md:block">+ Add New Task</p>
-                            <Image className="block md:hidden" src={addIconMobile} alt="add" />
-                        </button>
-                        <Image
-                            className="cursor-pointer"
-                            src={threeDots}
-                            alt="dots"
-                        />
-                    </div>
-                </header >
-
-            </div >
-            {!isEmptyArray(boards) && (
-                <>
-                    {openDropdown && (
-                        <HeaderDropdown
-                            setOpenDropdown={setDropdown}
-                            toggleAddModal={toggleAddModal}
-                            boardsAmount={boards.length}
-                            boards={boards}
-                        />
                     )}
-                    {isTaskModalOpen && (
-                        <TaskModal setTaskModalOpen={setTaskModalOpen} boards={boards} activeBoard={activeBoard} />
-                    )
-                    }
-                </>
+                </header >
+            </div >
+            {isHeaderDropdownOpen && (
+                <HeaderDropdown
+                    boardsAmount={boards.length}
+                    boards={boards}
+                />
             )}
+            {isTaskModalOpen && (
+                <TaskModal boards={boards} activeBoard={activeBoard} />
+            )
+            }
         </>
 
     )

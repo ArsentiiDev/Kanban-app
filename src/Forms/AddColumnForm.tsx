@@ -4,38 +4,48 @@ import * as Yup from 'yup';
 import Button from '@/components/Button';
 import cross from '../assets/icon-cross.svg'
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { columns } from './../Types/KanbanTypes';
+import { RootState } from '@/store/store';
+import axios from 'axios';
+import { toggleAddColumnModal } from '@/store/columnSlice';
+import { addColumn } from '@/store/boardSlice';
 
-const AddColumnForm = ({ setColumns, boardName, columns }: {
-    setColumns: (arg0: any) => any,
-    boardName: string,
-    columns: columns[]
-}) => {
+const AddColumnForm = () => {
 
+    const activeBoard = useSelector((state:RootState) => state.board.activeBoard);
+    const dispatch = useDispatch()
     const initialValues = {
-        columns: [''],
+        column: '',
     };
 
     const validationSchema = Yup.object({
-        columns: Yup.array().of(Yup.string()),
+        column: Yup.string().required('Column name is required'),
     });
 
-    const handleSubmit = (values: any) => {
+
+    const handleSubmit = async (values: any) => {
         console.log(values)
 
-        let normalised = values.columns.map((column: string, index: number) => { //move to utils
-            return {
-                id: columns.length + index + 1,
-                title: column,
-                tasks: [],
+        let newColumn = {
+            boardId: activeBoard?._id,
+            column: {
+                title:values.column,
+                tasks: []
             }
-        })
+        }
 
-        // Handle form submission logic here
-        setColumns((prev: any) => {
-            return [...prev, ...normalised]
-        })
+        try {
+            const response = await axios.post('/api/column', newColumn);
+            if (response.status === 200) {
+                dispatch(addColumn({column: response.data.data.column as columns}));
+                dispatch(toggleAddColumnModal());
+            } else {
+                console.log('Something went wrong')
+            }
+        } catch(error:any) {
+            console.error('Failed to create new column:', error);
+        }
         console.log(values);
     };
 
@@ -45,44 +55,25 @@ const AddColumnForm = ({ setColumns, boardName, columns }: {
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched }) => (
                     <Form className="space-y-4 md:space-y-6 overflow-y-auto overflow-x-hidden h-fit max-h-[40rem] px-2">
-                        <h1 className="text-xl font-semibold tracking-wider mb-4">Add Column</h1>
+                        <h1 className="text-lg font-semibold tracking-wider mb-6">{activeBoard ? activeBoard.title : ''}</h1>
                         <div>
-                            <label className="block text-xs tracking-wider font-medium mb-2">Board columns</label>
-                            <FieldArray name="columns">
-                                {({ push, remove }) => (
-                                    <div className="space-y-2">
-                                        {values.columns.map((_, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex items-center space-x-2">
-                                                <Field
-                                                    key={index}
-                                                    type="text"
-                                                    name={`columns.${index}`}
-                                                    className="w-full p-2 border-none rounded bg-gray outline outline-[.25px] outline-formBorder  focus:outline-darkBlue text-sm text-secondary cursor-pointer"
-                                                    placeholder={`Column ${index + 1}`}
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => remove(index)}
-                                                    className="px-2 py-1 cursor-pointer"
-                                                >
-                                                    <Image src={cross} alt="delete" />
-                                                </button>
-                                            </div>
-                                        ))}
-                                        <Button
-                                            onClick={() => push('')}
-                                            value='Add Column'
-                                            stylings={`bg-white text-lightBlue`}
-                                        />
-                                    </div>
-                                )}
-                            </FieldArray>
+                            <label htmlFor="column" className="block text-xs tracking-wider font-medium mb-2">
+                                Column Name
+                            </label>
+                            <Field
+                                type="text"
+                                id="column"
+                                name="column"
+                                placeholder="Enter name of the new column"
+                                className="w-full p-2 bg-gray rounded hover:border-none appearance-none outline outline-[.25px] outline-formBorder focus:outline-darkBlue text-sm text-secondary cursor-pointer placeholder-opacity-5"
+                            />
+                            {errors.column && touched.column && (
+                                <p className="text-red text-xs font-semibold m-1">{errors.column}</p>
+                            )}
                         </div>
                         <Button
                             type="submit"
-                            value="Save Changes"
+                            value="Add Column"
                             stylings={`bg-darkBlue text-white`}
                         />
                     </Form>
