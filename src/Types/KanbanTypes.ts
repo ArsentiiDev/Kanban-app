@@ -8,7 +8,7 @@ export interface tasks {
     _id:string,
     title: string,
     description: string,
-    createdAt: Date,
+    createdAt: number,
     subtasks: subtasks[]
 }
 
@@ -21,6 +21,7 @@ export interface columns {
 export interface kanbanBoards {
     _id: string,
     title: string,
+    createdAt: number,
     columns: columns[]
 }
 

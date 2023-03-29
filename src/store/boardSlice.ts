@@ -45,11 +45,20 @@ const boardSlice = createSlice({
         state.boards[updatedBoardIndex].columns.push(column);
         state.activeBoard = state.boards[updatedBoardIndex]
       }
-
+    },
+    editBoard: (state, action) => {
+      const {board} = action.payload;
+      console.log('REDUX', board)
+      const updatedBoardIndex = state.boards.findIndex(board => board._id === state.activeBoard?._id);
+        console.log('updatedIndex', updatedBoardIndex)
+      if (updatedBoardIndex !== -1) {
+        state.boards[updatedBoardIndex] = board;
+      }
+      state.activeBoard = board;
     }
   },
 });
 
-export const { setActiveBoard, setBoards,addBoard, addTask, addColumn } = boardSlice.actions;
+export const { setActiveBoard, setBoards,addBoard, addTask, addColumn, editBoard } = boardSlice.actions;
 
 export default boardSlice.reducer;

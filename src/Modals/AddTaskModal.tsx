@@ -13,7 +13,7 @@ function TaskModal() {
     //dispatch(toggleTaskModal())
 
     return (
-        <Modal event={() => dispatch(toggleTaskModal())}>
+        <Modal event={() => {dispatch(toggleTaskModal())}}>
             <div className="relative w-full max-w-[22rem] md:max-w-[30rem] mx-auto py-4 top-8 bg-gray rounded-lg text-white shadow-md shadow-shadow">
                     <CreateTaskForm />
             </div>

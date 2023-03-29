@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Column from './Column'
 import Task from './Task'
 import AddColumnModal from './../Modals/AddColumnModal';
@@ -11,7 +11,7 @@ function Board() {
     const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);
     const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isSidebarVisible);
     const addColumnOpen = useSelector((state:RootState) => state.column.isColumnModalOpen)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();    
 
     return (
         <>

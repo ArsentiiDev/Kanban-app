@@ -15,7 +15,7 @@ const subtaskSchema = new Schema({
 const taskSchema = new Schema({
   title: String,
   description: String,
-  createdAt: Date, // Reference to the parent column
+  createdAt: Number, // Reference to the parent column
   subtasks: [subtaskSchema], // List of reference IDs to subtasks
 });
 
@@ -26,7 +26,7 @@ const columnSchema = new Schema({
 
 const kanbanSchema = new Schema({
   title: String,
-  createdAt: Date,
+  createdAt: Number,
   columns: [columnSchema],
 });
 
@@ -64,3 +64,16 @@ export const addColumn = async (boardId:string, column:columns) => {
   return createdColumn;
 }
 
+export const editBoard = async (activeBoard: kanbanBoards, updatedBoardData: Record<string, any>) => {
+  const updatedBoard = await KanbanModel.findOneAndUpdate(
+    { _id: activeBoard._id },
+    updatedBoardData,
+    { new: true } // Return the updated board
+  );
+
+  if (!updatedBoard) {
+    throw new Error('Board not found');
+  }
+
+  return updatedBoard;
+};

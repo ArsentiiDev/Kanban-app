@@ -6,55 +6,73 @@ import Image from 'next/image';
 import cross from '../assets/icon-cross.svg'
 import axios from 'axios'
 import { columns } from '@/Types/KanbanTypes';
-import { useDispatch } from 'react-redux';
-import { addBoard } from '@/store/boardSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addBoard, editBoard } from '@/store/boardSlice';
 import { toggleAddBoardModal } from '@/store/SidebarSlice';
-
-
-const initialValues = {
-    title: '',
-    columns: ['To Do', 'Doing']
-}
-
-const validationSchema = Yup.object({
-    title: Yup.string().required('Title is required'),
-    columns: Yup.array().of(Yup.string()),
-})
+import { RootState } from '@/store/store';
 
 function AddBoardForm() {
-
+    const isEditModeActive = useSelector((state:RootState) => state.navbar.isEditModeActive);
+    const activeBoard = useSelector((state:RootState) => state.board.activeBoard);
     const dispatch = useDispatch();
 
     const handleSubmit = async (values: any) => {
-        const newBoard = {
-            title: values.title,
-            createdAt: Date.now(),
-            columns: values.columns.map((el: columns) => {
-                return {
-                    title: el,
-                    tasks: []
-                }
-            }),
-        };
         try {
+          let newBoard = {
+            title: values.title,
+            columns: values.columns.map((column: string) => {
+              return {
+                title: column,
+                tasks: [],
+              };
+            }),
+            createdAt: Date.now()
+          };
+      
+          if (isEditModeActive) {
+            newBoard.createdAt = activeBoard!.createdAt;
+            newBoard.columns = values.columns.map((title:string) => {
+              let index = activeBoard!.columns.findIndex((col) => col.title === title);
+              return {
+                title: title,
+                tasks: activeBoard?.columns[index] ? activeBoard?.columns[index].tasks :  [],
+              };
+            });
+            console.log('handleSubmit', newBoard)
+      
+            const response = await axios.put('/api/board', {newBoard:newBoard, activeBoard: activeBoard});
+            console.log('handleSubmit- response', response)
+            dispatch(editBoard(response.data.data));
+          } else {
+            newBoard.createdAt = Date.now();
+      
             const response = await axios.post('/api/board', newBoard);
-            if (response.status === 200) {
-                dispatch(addBoard(response.data.data));
-                dispatch(toggleAddBoardModal())
-            } else {
-                console.log('Something went wrong')
-            }
+            dispatch(addBoard(response.data.data));
+          }
+      
+          dispatch(toggleAddBoardModal());
         } catch (error) {
-            console.error('Failed to create Kanban board:', error);
+          console.error('Failed to create Kanban board:', error);
         }
         console.log(values);
-    };
+      };
+      
+
+    const initialValues = {
+        title: activeBoard?.title,
+        columns: isEditModeActive ? activeBoard!.columns.map(column => column.title):['To Do', 'Doing']
+    }
+    
+    const validationSchema = Yup.object({
+        title: Yup.string(),
+        columns: Yup.array().of(Yup.string()),
+    })
 
     return (
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
             {({ values, errors, touched }) => (
                 <Form className="space-y-6 md:space-y-6 overflow-y-auto overflow-x-hidden h-fit max-h-[25rem] px-6 mb-4">
-                    <h1 className="text-xl font-semibold tracking-wider mb-4">Add New Board</h1>
+                    <h1 className="text-xl font-semibold tracking-wider mb-4">{isEditModeActive ? 'Edit': 'Add New'} Board</h1>
                     <div>
                         <label htmlFor="title" className="block text-xs tracking-wider font-medium mb-2">
                             Board Name
@@ -108,7 +126,7 @@ function AddBoardForm() {
                         type="submit"
                         primary={true}
                     >
-                        <p>Add Board</p>
+                        <p>{isEditModeActive ? 'Save changes': 'Add Board'}</p>
                     </Button>
                 </Form>
             )}

@@ -1,14 +1,12 @@
 // store/boardSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from '@reduxjs/toolkit';
-import { ObjectId } from "mongodb";
-import { kanbanBoards } from '@/Types/KanbanTypes';
 
 const initialState = {
   isTaskModalOpen: false,
   isHeaderDropdownOpen: false,
   isEditBoardOpen: false,
-  isEditBoardMode: false
+  isEditModeActive: false
 };
 
 const navbarSlice = createSlice({
@@ -24,12 +22,12 @@ const navbarSlice = createSlice({
     toggleEditBoardModal: (state) => {
       state.isEditBoardOpen = !state.isEditBoardOpen
     },
-    toggleBoardMode: (state) => {
-      state.isEditBoardMode = !state.isEditBoardMode
+    setEditBoardMode: (state, action:PayloadAction<boolean>) => {
+      state.isEditModeActive = action.payload;
     }
   },
 });
 
-export const { toggleTaskModal, toggleHeaderModal, toggleEditBoardModal, toggleBoardMode } = navbarSlice.actions;
+export const { toggleTaskModal, toggleHeaderModal, toggleEditBoardModal, setEditBoardMode } = navbarSlice.actions;
 
 export default navbarSlice.reducer;
