@@ -15,7 +15,7 @@ function Board() {
 
     return (
         <>
-            <div className={`flex ${isSidebarOpen ? 'md:relative md:left-[18rem] md:top-[1rem] pt-12' : 'md:left-0 pt-8'}  overflow-x-scroll min-h-screen bg-mainBG text-white`}>
+            <div className={`flex pt-14 md:pt-6 ${isSidebarOpen ? 'md:relative md:left-[16rem] md:top-12' : 'md:left-0'} overflow-x-scroll min-h-screen bg-mainBG text-white`}>
                 {activeBoard && activeBoard.columns && activeBoard.columns.map((column, index) => (
                     <Column key={index}>
                         <h2 className="font-bold text-sm mb-4 tracking-widest text-secondary">{column.title} ({column.tasks.length})</h2>

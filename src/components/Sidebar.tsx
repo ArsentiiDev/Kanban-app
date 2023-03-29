@@ -33,7 +33,7 @@ function Sidebar() {
     return (
         <>
             {isSidebarOpen && (
-                <div className="hidden md:bg-gray md:z-10 md:fixed md:flex md:flex-col  top-16 bottom-0 md:w-[18rem] left:0 text-white pt-8 pb-4">
+                <div className="hidden md:bg-gray md:z-10 md:fixed md:flex md:flex-col  top-16 bottom-0 md:w-[16rem] left:0 text-white pt-8 pb-4">
                     <h4 className="px-6 font-medium tracking-widest text-sm mb-3 text-secondary">ALL BOARDS ({boards ? boards.length : 0})</h4>
                     <div className="flex-grow">
                         {boards && activeBoard && boards.map((el: kanbanBoards, index: number) => (

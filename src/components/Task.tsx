@@ -8,7 +8,7 @@ function Task({ task }: {
     return (
         <div
             key={task._id}
-            className="bg-gray w-full p-4 mb-4 rounded-lg shadow-md shadow-shadow cursor-pointer"
+            className="bg-gray w-full p-4 mb-6 rounded-lg shadow-md shadow-shadow cursor-pointer hover:text-lightBlue"
         >
             <h3 className="font-bold text-lg mb-2">{task.title}</h3>
             <p className="text-sm text-secondary font-bold tracking-wider">{task.subtasks ? task.subtasks.reduce((acc, object) => {

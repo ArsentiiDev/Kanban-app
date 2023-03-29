@@ -22,7 +22,7 @@ function Column({ children, onClick, stylings }: {
 }) {
     return (
         <div
-            className={`flex-none w-[18rem] md:w-[20rem] m-4 p-4 md:py-4 rounded shadow ${stylings}`}
+            className={`flex-none w-[18rem] md:w-[20rem] m-4 p-4 pt-6 rounded shadow ${stylings}`}
         >
             {children}
         </div>

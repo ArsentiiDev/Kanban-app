@@ -29,7 +29,7 @@ function Navbar() {
         <>
             <div className="fixed z-10 right-0 left-0 text-white">
                 <header className="flex p-4 items-center relative bg-gray">
-                    <div className="flex md:w-[18rem] gap-4 items-center pl-2">
+                    <div className="flex md:w-[16rem] gap-4 items-center pl-2">
                         <Image src={logo} alt="logo" />
                         <h3 className="hidden md:block text-4xl font-semibold">
                             kanban
@@ -64,7 +64,7 @@ function Navbar() {
                                     dispatch(toggleTaskModal())
                                 }}
                                 primary={false}
-                                spacing={`py-4 px-6`}
+                                spacing={`py-3 px-6`}
                             >
                                 <p className="hidden md:block text-sm uppercase">Add Task</p>
                                 <Image className="block md:hidden fill-gray" src={addIconMobile} alt="add" />
