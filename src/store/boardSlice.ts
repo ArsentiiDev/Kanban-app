@@ -55,10 +55,17 @@ const boardSlice = createSlice({
         state.boards[updatedBoardIndex] = board;
       }
       state.activeBoard = board;
+    },
+    deleteBoard: (state) => {
+      const deleteBoardIndex = state.boards.findIndex(board => board._id === state.activeBoard?._id);
+      if (deleteBoardIndex !== -1) {
+        state.boards.splice(deleteBoardIndex, 1);
+      }
+      state.activeBoard = state.boards[0];
     }
   },
 });
 
-export const { setActiveBoard, setBoards,addBoard, addTask, addColumn, editBoard } = boardSlice.actions;
+export const { setActiveBoard, setBoards,addBoard, addTask, addColumn, editBoard, deleteBoard  } = boardSlice.actions;
 
 export default boardSlice.reducer;

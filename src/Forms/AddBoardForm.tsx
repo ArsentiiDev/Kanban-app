@@ -59,12 +59,12 @@ function AddBoardForm() {
       
 
     const initialValues = {
-        title: activeBoard?.title,
+        title: isEditModeActive ? activeBoard?.title : '',
         columns: isEditModeActive ? activeBoard!.columns.map(column => column.title):['To Do', 'Doing']
     }
     
     const validationSchema = Yup.object({
-        title: Yup.string(),
+        title: isEditModeActive ? Yup.string() : Yup.string().required(),
         columns: Yup.array().of(Yup.string()),
     })
 

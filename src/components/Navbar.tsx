@@ -42,7 +42,7 @@ function Navbar() {
                         {activeBoard && (
                             <>
                                 <div className="ml-4 mr-2">
-                                    <h2 className="text-xl font-bold">{activeBoard.title}</h2>
+                                    <h2 className="text-2xl font-bold">{activeBoard.title}</h2>
                                 </div>
                                 <div
                                 onClick={()=>dispatch(toggleHeaderModal())}

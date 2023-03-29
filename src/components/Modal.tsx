@@ -9,10 +9,8 @@ function Modal({children, event}: {
     className="fixed inset-0 overflow-y-auto flex items-center justify-center z-40"
     >
         <div
-            onClick={(e) => {
-                if (e.target === e.currentTarget)
-                event()
-            }}
+          
+            onClick={event ? (e) => {if (e.target === e.currentTarget) event()}: undefined}
             className="absolute inset-0 bg-darkBG bg-opacity-25">
                 {children}
         </div>

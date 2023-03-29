@@ -6,7 +6,8 @@ const initialState = {
   isTaskModalOpen: false,
   isHeaderDropdownOpen: false,
   isEditBoardOpen: false,
-  isEditModeActive: false
+  isEditModeActive: false,
+  isDeleteBoardModalOpen: false,
 };
 
 const navbarSlice = createSlice({
@@ -24,10 +25,13 @@ const navbarSlice = createSlice({
     },
     setEditBoardMode: (state, action:PayloadAction<boolean>) => {
       state.isEditModeActive = action.payload;
+    },
+    toggleDeleteBoardModal: (state) => {
+      state.isDeleteBoardModalOpen = !state.isDeleteBoardModalOpen;
     }
   },
 });
 
-export const { toggleTaskModal, toggleHeaderModal, toggleEditBoardModal, setEditBoardMode } = navbarSlice.actions;
+export const { toggleTaskModal, toggleHeaderModal, toggleEditBoardModal, setEditBoardMode,toggleDeleteBoardModal } = navbarSlice.actions;
 
 export default navbarSlice.reducer;

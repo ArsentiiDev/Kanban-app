@@ -1,11 +1,14 @@
 import Modal from '@/components/Modal'
-import { setEditBoardMode, toggleEditBoardModal } from '@/store/navbarSlice';
+import { setEditBoardMode, toggleEditBoardModal, toggleDeleteBoardModal } from '@/store/navbarSlice';
 import React from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AddBoardForm from './../Forms/AddBoardForm';
 import { toggleAddBoardModal } from '@/store/SidebarSlice';
+import { RootState } from '@/store/store';
+import DeleteBoardModal from './DeleteBoardModal';
 
 function SettingsModal() {
+    const isDeleteBoardOpen = useSelector((state:RootState) => state.navbar.isDeleteBoardModalOpen)
     const dispatch = useDispatch()
     const toggleBoardSettings = () => {
         dispatch(setEditBoardMode(true))
@@ -27,11 +30,16 @@ function SettingsModal() {
                     className="hover:bg-darkBlue py-2 mr-4 rounded-r-full cursor-pointer">
                         <h3 className="font-bold px-2">Edit Board</h3>
                     </div>
-                    <div className="hover:bg-darkBlue py-2 mr-4 rounded-r-full cursor-pointer">
+                    <div
+                    onClick={() => dispatch(toggleDeleteBoardModal())}
+                    className="hover:bg-darkBlue py-2 mr-4 rounded-r-full cursor-pointer">
                         <h3 className="text-red font-bold px-2">Delete Board</h3>
                     </div>
                 </div>
             </div>
+            {isDeleteBoardOpen && (
+                <DeleteBoardModal/>
+            )}
         </div>
     )
 }

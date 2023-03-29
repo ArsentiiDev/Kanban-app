@@ -4,7 +4,7 @@ import {createBoard, deleteBoardById, getBoards, KanbanModel} from '../../models
 import { editBoard } from './../../models/KanbanSchema';
 
 export default async function handler(req:NextApiRequest, res: NextApiResponse) {
-  const { method, body } = req;
+  const { method, body, query } = req;
 
   await dbConnect();
   console.log('CONNECTED SUCCESSFULL')
@@ -21,7 +21,7 @@ export default async function handler(req:NextApiRequest, res: NextApiResponse) 
 
     case 'POST':
       try {
-        const kanbanBoard = await createBoard(req.body)
+        const kanbanBoard = await createBoard(body)
         res.status(201).json({ success: true, data: kanbanBoard });
       } catch (error) {
         res.status(400).json({ success: false });
@@ -40,11 +40,10 @@ export default async function handler(req:NextApiRequest, res: NextApiResponse) 
     case 'DELETE':
         try {
           let deletedBoard;
-          const {id} = req.query;
+          const {id} = query;
           if (id) {
             deletedBoard = await deleteBoardById(id as string);
           }
-          
           res.status(200).json({ success: true, data: deletedBoard });
         } catch (error) {
           res.status(400).json({ success: false });
