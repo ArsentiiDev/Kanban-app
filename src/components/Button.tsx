@@ -16,7 +16,7 @@ function Button({ children, type, onClick, value, spacing, primary = true }: {
         <button
             type={type || "button"}
             onClick={onClick}
-            className={`${spacing ? spacing : 'py-3 my-4'}  w-full rounded-full font-bold tracking-wider text-sm ${primary ? types.primary : types.secondary}`}
+            className={`${spacing ? spacing : 'py-3 my-4'} w-full rounded-full font-bold tracking-wider text-sm ${primary ? types.primary : types.secondary}`}
         >
             {children}
         </button>

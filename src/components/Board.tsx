@@ -9,8 +9,6 @@ import { toggleAddColumnModal } from '@/store/columnSlice';
 
 function Board() {
     const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);
-    const columns: columns[] | [] = useSelector((state: RootState) => state.column.columns);
-    const boards: kanbanBoards[]= useSelector((state: RootState) => state.board.boards);
     const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isSidebarVisible);
     const addColumnOpen = useSelector((state:RootState) => state.column.isColumnModalOpen)
     const dispatch = useDispatch()

@@ -21,13 +21,6 @@ const validationSchema = Yup.object({
     columns: Yup.array().of(Yup.string()),
 })
 
-const colors = {
-    white: 'white',
-    lightBlue: 'lightBlue',
-    darkBlue: 'darkBlue',
-    gray: 'gray'
-}
-
 function AddBoardForm() {
 
     const dispatch = useDispatch();

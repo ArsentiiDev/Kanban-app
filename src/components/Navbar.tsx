@@ -6,7 +6,7 @@ import logo from '../assets/logo-mobile.svg';
 import upDropdown from '../assets/icon-chevron-up.svg';
 import downDropdown from '../assets/icon-chevron-down.svg'
 import addIconMobile from '../assets/icon-add-task-mobile.svg'
-import threeDots from '../assets/icon-vertical-ellipsis.svg'
+import settingsIcon from '../assets/settings.svg'
 import HeaderDropdown from '../Modals/HeaderDropdownModal';
 import TaskModal from '../Modals/AddTaskModal';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,14 +14,15 @@ import { kanbanBoards } from './../Types/KanbanTypes';
 import { RootState } from '@/store/store';
 import { Dispatch } from '@reduxjs/toolkit';
 import { isEmptyArray } from 'formik';
-import { toggleHeaderModal, toggleTaskModal } from '@/store/navbarSlice';
+import { toggleHeaderModal, toggleTaskModal, toggleEditBoardModal } from '@/store/navbarSlice';
 import  Button  from '@/components/Button';
+import SettingsModal from '@/Modals/SettingsModal';
 
 function Navbar() {
     const activeBoard: kanbanBoards | null = useSelector((state: RootState) => state.board.activeBoard);
     const isTaskModalOpen: Boolean = useSelector((state: RootState) => state.navbar.isTaskModalOpen);
     const isHeaderDropdownOpen: Boolean = useSelector((state: RootState) => state.navbar.isHeaderDropdownOpen);
-    const boards: kanbanBoards[] = useSelector((state: RootState) => state.board.boards);
+    const isEditBoardModalOpen: Boolean = useSelector((state: RootState) => state.navbar.isEditBoardOpen);
     const dispatch: Dispatch = useDispatch();
 
     return (
@@ -45,7 +46,7 @@ function Navbar() {
                                 </div>
                                 <div
                                 onClick={()=>dispatch(toggleHeaderModal())}
-                                className="p-4 hover:bg-secondary/25 rounded-xl inline-flex items-center justify-cente md:hidden">
+                                className="p-4 hover:bg-secondary/25 rounded-xl inline-flex items-center justify-center md:hidden">
                                 <Image
                                     src={isHeaderDropdownOpen ? downDropdown : upDropdown}
                                     alt="dropdown"
@@ -56,36 +57,43 @@ function Navbar() {
                         )}
                     </div>
                     {activeBoard && (
+                        <>
                         <div className="flex items-center gap-4">
                             <Button
                                 onClick={() => {
                                     dispatch(toggleTaskModal())
                                 }}
-                                primary={true}
-                                spacing={`py-4 px-4`}
+                                primary={false}
+                                spacing={`py-4 px-6`}
                             >
-                                <p className="hidden md:block">+ Add New Task</p>
-                                <Image className="block md:hidden" src={addIconMobile} alt="add" />
+                                <p className="hidden md:block text-sm uppercase">Add Task</p>
+                                <Image className="block md:hidden fill-gray" src={addIconMobile} alt="add" />
                             </Button>
-                            <Image
-                                className="cursor-pointer"
-                                src={threeDots}
-                                alt="dots"
-                            />
                         </div>
+                        <div 
+                        className="hover:bg-secondary/25 rounded-2xl cursor-pointer p-2 ml-4"
+                        onClick={() => dispatch(toggleEditBoardModal())}
+                        >
+                        <Image
+                            className=" scale-125"
+                            src={settingsIcon}
+                            alt="dots"
+                        />
+                    </div>
+                        </>
                     )}
+
                 </header >
             </div >
             {isHeaderDropdownOpen && (
-                <HeaderDropdown
-                    boardsAmount={boards.length}
-                    boards={boards}
-                />
+                <HeaderDropdown />
             )}
             {isTaskModalOpen && (
-                <TaskModal boards={boards} activeBoard={activeBoard} />
-            )
-            }
+                <TaskModal />
+            )}
+            {isEditBoardModalOpen && (
+                <SettingsModal />
+            )}
         </>
 
     )

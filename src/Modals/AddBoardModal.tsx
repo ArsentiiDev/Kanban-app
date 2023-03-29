@@ -3,26 +3,18 @@ import AddBoardForm from './../Forms/AddBoardForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleAddBoardModal } from '@/store/SidebarSlice';
 import { RootState } from '@/store/store';
+import Modal from '@/components/Modal';
 
 function AddBoardModal() {
 
     const dispatch = useDispatch();
 
     return (
-        <div
-            className="fixed inset-0 overflow-y-auto flex items-center justify-center z-40"
-        >
-            <div
-                onClick={(e) => {
-                    if (e.target === e.currentTarget)
-                    dispatch(toggleAddBoardModal())
-                }}
-                className="absolute inset-0 bg-darkBG bg-opacity-25">
-                <div className="relative w-full max-w-[22rem] md:max-w-[30rem] mx-auto py-4 top-[6rem] bg-gray rounded-lg text-white shadow-md shadow-shadow">
-                    <AddBoardForm />
-                </div>
+        <Modal event={() => dispatch(toggleAddBoardModal())}>
+            <div className="relative w-full max-w-[22rem] md:max-w-[30rem] top-16 mx-auto py-4 bg-gray rounded-lg text-white shadow-md shadow-shadow">
+                <AddBoardForm />
             </div>
-        </div>
+        </Modal>
     )
 }
 
