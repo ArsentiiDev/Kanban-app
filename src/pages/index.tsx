@@ -11,8 +11,6 @@ import { setBoards } from '@/store/boardSlice';
 import { Dispatch } from '@reduxjs/toolkit';
 import { RootState } from '@/store/store';
 
-
-
 export default function Home({ kanbanBoards }: {
   kanbanBoards: kanbanBoards[] | []
 }) {
@@ -21,7 +19,7 @@ export default function Home({ kanbanBoards }: {
 
   useEffect(() => {
     dispatch(setBoards(kanbanBoards))
-  }, [kanbanBoards, dispatch])
+  }, [kanbanBoards])
 
   return (
     <Layout>
