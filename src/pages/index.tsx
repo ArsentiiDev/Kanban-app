@@ -29,7 +29,7 @@ export default function Home({ kanbanBoards }: {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const response = await axios.get(`${process.env.BASE_URL}/api/board`);
+  const response = await axios.get('/api/board');
   const data = await response.data.data
 
   return {

@@ -14,8 +14,8 @@ export default async function handler(req:NextApiRequest, res: NextApiResponse) 
       try {
         const kanbanBoards = await getBoards();
         res.status(200).json({ success: true, data: kanbanBoards });
-      } catch (error) {
-        res.status(400).json({ success: false });
+      } catch (error:any) {
+        res.status(400).json({ success: false, message: error.message as string });
       }
       break;
 
