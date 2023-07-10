@@ -1,4 +1,3 @@
-// store/boardSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from '@reduxjs/toolkit';
 
@@ -8,6 +7,7 @@ const initialState = {
   isEditBoardOpen: false,
   isEditModeActive: false,
   isDeleteBoardModalOpen: false,
+  isTaskDescriptionModalOpen: false,
 };
 
 const navbarSlice = createSlice({
@@ -28,10 +28,13 @@ const navbarSlice = createSlice({
     },
     toggleDeleteBoardModal: (state) => {
       state.isDeleteBoardModalOpen = !state.isDeleteBoardModalOpen;
+    },
+    toggleTaskDescriptionModal: (state) => {
+      state.isTaskDescriptionModalOpen = !state.isTaskDescriptionModalOpen;
     }
   },
 });
 
-export const { toggleTaskModal, toggleHeaderModal, toggleEditBoardModal, setEditBoardMode,toggleDeleteBoardModal } = navbarSlice.actions;
+export const { toggleTaskModal, toggleHeaderModal, toggleEditBoardModal, setEditBoardMode,toggleDeleteBoardModal, toggleTaskDescriptionModal } = navbarSlice.actions;
 
 export default navbarSlice.reducer;

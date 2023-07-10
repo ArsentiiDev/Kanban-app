@@ -53,6 +53,33 @@ export const addTask = async (boardId:string, columnId:string, task:tasks) => {
   return createdTask;
 };
 
+export const editTask = async (
+  boardId: string,
+  columnId: string,
+  taskId: string,
+  updatedTaskData: Partial<tasks>
+) => {
+  const board = await KanbanModel.findById(boardId);
+  if (!board) {
+    throw new Error('Board not found');
+  }
+
+  const column = board.columns.id(columnId);
+  if (!column) {
+    throw new Error('Column not found');
+  }
+
+  const task = column.tasks.id(taskId);
+  if (!task) {
+    throw new Error('Task not found');
+  }
+
+  Object.assign(task, updatedTaskData);
+  await board.save();
+  return task;
+};
+
+
 export const addColumn = async (boardId:string, column:columns) => {
   const board = await KanbanModel.findById(boardId);
   if (!board) {

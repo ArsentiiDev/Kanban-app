@@ -13,11 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case 'POST': // Adding a task
       try {
         const { kanbanId, task, columnId } = body;
-        console.log(kanbanId)
-        console.log(task)
-
         const addedTask = await addTask(kanbanId, columnId, task);
-
         res.status(200).json({ success: true, data: {task: addedTask} });
       } catch (error) {
         res.status(400).json({ success: false });

@@ -21,7 +21,7 @@ export default function Home({ kanbanBoards }: {
 
   useEffect(() => {
     dispatch(setBoards(kanbanBoards))
-  }, [kanbanBoards])
+  }, [kanbanBoards, dispatch])
 
   return (
     <Layout>

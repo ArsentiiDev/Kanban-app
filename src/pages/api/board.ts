@@ -31,7 +31,6 @@ export default async function handler(req:NextApiRequest, res: NextApiResponse) 
       try {
         const {activeBoard, newBoard} = body
         const kanbanBoard = await editBoard(activeBoard, newBoard)
-        console.log('boardsAPi', kanbanBoard)
         res.status(200).json({success: true, data: {board: kanbanBoard}})
       } catch (error) {
         res.status(400).json({success: false})

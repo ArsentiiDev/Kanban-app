@@ -13,7 +13,7 @@ function EmptyBoard() {
 
     return (
         <div>
-            <h1>There's Empty</h1>
+            <h1>Empty Board</h1>
             {addBoardModalOpen && (
                 <AddBoardModal />
             )}

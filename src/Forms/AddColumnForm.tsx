@@ -2,8 +2,6 @@ import React from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Button from '@/components/Button';
-import cross from '../assets/icon-cross.svg'
-import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { columns } from './../Types/KanbanTypes';
 import { RootState } from '@/store/store';
@@ -23,10 +21,7 @@ const AddColumnForm = () => {
         column: Yup.string().required('Column name is required'),
     });
 
-
     const handleSubmit = async (values: any) => {
-        console.log(values)
-
         let newColumn = {
             boardId: activeBoard?._id,
             column: {
@@ -46,9 +41,7 @@ const AddColumnForm = () => {
         } catch(error:any) {
             console.error('Failed to create new column:', error);
         }
-        console.log(values);
     };
-
 
     return (
         <>
